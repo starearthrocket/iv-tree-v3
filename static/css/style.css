@@ -1315,3 +1315,45 @@ a {
 .delete-text-link:focus-visible {
     color: #7d2525;
 }
+
+/* ----------------------------------------
+   Authentication navigation and messages
+---------------------------------------- */
+
+.nav-logout-form {
+    margin: 0;
+}
+
+.nav-logout-button {
+    padding: 0;
+    background: none;
+    border: 0;
+    color: var(--forest-deep);
+    font: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.nav-logout-button:hover,
+.nav-logout-button:focus-visible {
+    color: var(--leaf-green);
+}
+
+.message-container {
+    width: min(1200px, 92%);
+    margin: 1rem auto 0;
+}
+
+.site-message {
+    padding: 1rem 1.25rem;
+    background-color: #e2f1df;
+    color: var(--forest-deep);
+    border: 1px solid rgba(15, 61, 46, 0.15);
+    border-radius: 10px;
+}
+
+.site-message.error {
+    background-color: #f8e3e3;
+    color: #7d2525;
+}
