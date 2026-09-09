@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Register | I-V Tree{% endblock %}
+
+{% block content %}
+<main>
+    <section class="report-form-section">
+        <div class="section-container">
+            <div class="report-form-heading">
+                <p class="section-eyebrow">Join I-V Tree</p>
+                <h1>Create your account</h1>
+
+                <p>
+                    Create an account to report trees, add progress
+                    updates and take part in the I-V Tree community.
+                </p>
+            </div>
+
+            <form method="post" class="report-form">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+
+                        {% if field.help_text %}
+                            <small>{{ field.help_text }}</small>
+                        {% endif %}
+
+                        {% for error in field.errors %}
+                            <p class="field-error">
+                                {{ error }}
+                            </p>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+                <button
+                    type="submit"
+                    class="button button-primary"
+                >
+                    Create Account
+                </button>
+            </form>
+        </div>
+    </section>
+</main>
+{% endblock %}
