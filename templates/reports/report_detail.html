@@ -69,6 +69,13 @@
             {% if user.is_authenticated and report.owner == user %}
                 <div class="owner-actions">
                     <a
+                        href="{% url 'reports:progress_create' report.pk %}"
+                        class="button button-primary"
+                    >
+                        Add Progress Update
+                    </a>
+
+                    <a
                         href="{% url 'reports:report_edit' report.pk %}"
                         class="button button-outline-dark"
                     >
@@ -186,6 +193,14 @@
                                 {% endif %}
 
                                 <p>{{ update.description }}</p>
+
+                                {% if update.photo %}
+                                    <img
+                                        src="{{ update.photo.url }}"
+                                        alt="Progress update for {{ report.title }}"
+                                        class="progress-photo"
+                                    >
+                                {% endif %}
                             </div>
                         </article>
                     {% empty %}

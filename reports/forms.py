@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import TreeReport
+from .models import ProgressUpdate, TreeReport
 
 
 class TreeReportForm(forms.ModelForm):
@@ -51,4 +51,26 @@ class TreeReportForm(forms.ModelForm):
             'tree_species': 'Tree species',
             'location_name': 'Location',
             'what3words': 'What3words address',
+        }
+
+
+class ProgressUpdateForm(forms.ModelForm):
+    """Form used to add a progress update to a tree report."""
+
+    class Meta:
+        model = ProgressUpdate
+        fields = [
+            'description',
+            'photo',
+            'status',
+        ]
+        widgets = {
+            'description': forms.Textarea(
+                attrs={
+                    'rows': 5,
+                    'placeholder': (
+                        'Describe what has changed or what action was taken.'
+                    ),
+                }
+            ),
         }
