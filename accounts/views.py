@@ -1,7 +1,8 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
-from .forms import RegistrationForm
+from .forms import ProfileForm, RegistrationForm
 from .models import Profile
 
 
@@ -32,4 +33,41 @@ def register(request):
         request,
         'accounts/register.html',
         {'form': form},
+    )
+
+
+@login_required
+def profile(request):
+    """Allow a logged-in user to view and update their profile."""
+
+    user_profile, created = Profile.objects.get_or_create(
+        user=request.user
+    )
+
+    if request.method == 'POST':
+        form = ProfileForm(
+            request.POST,
+            instance=user_profile,
+        )
+
+        if form.is_valid():
+            form.save()
+
+            messages.success(
+                request,
+                'Your profile has been updated.'
+            )
+
+            return redirect('accounts:profile')
+    else:
+        form = ProfileForm(instance=user_profile)
+
+    return render(
+        request,
+        'accounts/profile.html',
+        {
+            'form': form,
+            'profile': user_profile,
+            'avatar_options': Profile.Avatar.choices,
+        },
     )

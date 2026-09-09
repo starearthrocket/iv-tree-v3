@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Profile | I-V Tree{% endblock %}
+
+{% block content %}
+<main>
+    <section class="profile-section">
+        <div class="section-container">
+            <div class="profile-heading">
+                <p class="section-eyebrow">My profile</p>
+                <h1>Choose your I-V Tree identity</h1>
+
+                <p>
+                    Select a woodland avatar and add a short introduction
+                    for your community profile.
+                </p>
+            </div>
+
+            <div class="profile-layout">
+                <aside class="profile-preview-card">
+                    <p class="profile-preview-label">Current profile</p>
+
+                    <img
+                        src="{% static 'avatars/' %}{{ profile.avatar_choice }}"
+                        alt="{{ profile.get_avatar_choice_display }}"
+                        class="profile-current-avatar"
+                    >
+
+                    <h2>{{ user.username }}</h2>
+
+                    <p class="profile-avatar-name">
+                        {{ profile.get_avatar_choice_display }}
+                    </p>
+
+                    {% if profile.bio %}
+                        <p class="profile-bio-preview">
+                            {{ profile.bio }}
+                        </p>
+                    {% else %}
+                        <p class="profile-bio-preview profile-bio-empty">
+                            No bio added yet.
+                        </p>
+                    {% endif %}
+                </aside>
+
+                <form method="post" class="profile-form">
+                    {% csrf_token %}
+
+                    <fieldset class="avatar-fieldset">
+                        <legend>Choose your woodland avatar</legend>
+
+                        {% static 'avatars/' as avatar_base %}
+
+                        <div class="avatar-grid">
+                            {% for value, label in avatar_options %}
+                                <label class="avatar-option">
+                                    <input
+                                        type="radio"
+                                        name="avatar_choice"
+                                        value="{{ value }}"
+                                        {% if form.avatar_choice.value == value %}
+                                            checked
+                                        {% endif %}
+                                    >
+
+                                    <span class="avatar-card">
+                                        <img
+                                            src="{{ avatar_base }}{{ value }}"
+                                            alt="{{ label }}"
+                                        >
+
+                                        <span>{{ label }}</span>
+                                    </span>
+                                </label>
+                            {% endfor %}
+                        </div>
+
+                        {% for error in form.avatar_choice.errors %}
+                            <p class="field-error">
+                                {{ error }}
+                            </p>
+                        {% endfor %}
+                    </fieldset>
+
+                    <div class="form-group profile-bio-field">
+                        <label for="{{ form.bio.id_for_label }}">
+                            About you
+                        </label>
+
+                        {{ form.bio }}
+
+                        <small>
+                            Optional — maximum 500 characters.
+                        </small>
+
+                        {% for error in form.bio.errors %}
+                            <p class="field-error">
+                                {{ error }}
+                            </p>
+                        {% endfor %}
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="button button-primary"
+                    >
+                        Save Profile
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}
