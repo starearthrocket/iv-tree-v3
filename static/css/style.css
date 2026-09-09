@@ -7,8 +7,10 @@
     --forest-green: #166b3a;
     --leaf-green: #4caf50;
     --sage: #8fbe8f;
+    --moss: #b7c8a6;
     --cream: #f7f5ec;
     --sand: #e9e3c9;
+    --earth: #cdba9a;
     --charcoal: #1f1f1f;
     --white: #ffffff;
 }
@@ -182,7 +184,92 @@ a {
 
 
 /* ----------------------------------------
-   Responsive navigation and hero
+   How it works
+---------------------------------------- */
+
+.how-it-works {
+    padding: 6rem 0;
+    background-color: var(--cream);
+}
+
+.section-container {
+    width: min(1200px, 92%);
+    margin: 0 auto;
+}
+
+.section-heading {
+    max-width: 720px;
+    margin: 0 auto 3.5rem;
+    text-align: center;
+}
+
+.section-eyebrow {
+    margin: 0 0 0.75rem;
+    color: var(--forest-green);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.section-heading h2 {
+    margin: 0 0 1rem;
+    color: var(--forest-deep);
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    line-height: 1.15;
+}
+
+.section-heading p {
+    margin: 0;
+    color: #4f554f;
+    line-height: 1.8;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.feature-card {
+    min-height: 290px;
+    padding: 2.25rem;
+    background-color: var(--white);
+    border: 1px solid rgba(15, 61, 46, 0.1);
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(15, 61, 46, 0.06);
+}
+
+.feature-number {
+    width: 54px;
+    height: 54px;
+    margin-bottom: 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--sand);
+    color: var(--forest-deep);
+    border-radius: 50%;
+    font-weight: 600;
+}
+
+.feature-card h3 {
+    margin: 0 0 0.75rem;
+    color: var(--forest-deep);
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+    font-size: 1.8rem;
+}
+
+.feature-card p {
+    margin: 0;
+    color: #555b55;
+    line-height: 1.8;
+}
+
+
+/* ----------------------------------------
+   Responsive
 ---------------------------------------- */
 
 @media (max-width: 850px) {
@@ -205,6 +292,14 @@ a {
     .hero-overlay {
         background: rgba(15, 61, 46, 0.78);
     }
+
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .feature-card {
+        min-height: auto;
+    }
 }
 
 @media (max-width: 520px) {
@@ -223,5 +318,13 @@ a {
     .hero-actions {
         flex-direction: column;
         align-items: stretch;
+    }
+
+    .how-it-works {
+        padding: 4rem 0;
+    }
+
+    .feature-card {
+        padding: 1.75rem;
     }
 }
