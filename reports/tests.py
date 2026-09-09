@@ -99,3 +99,91 @@ class TreeReportViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Public oak report')
         self.assertContains(response, 'Brighton')
+
+
+class TreeReportOwnershipTest(TestCase):
+    def setUp(self):
+        self.owner = User.objects.create_user(
+            username='owner',
+            password='testpassword123'
+        )
+
+        self.other_user = User.objects.create_user(
+            username='otheruser',
+            password='testpassword123'
+        )
+
+        self.report = TreeReport.objects.create(
+            owner=self.owner,
+            title='Owner report',
+            description='A report belonging to the owner.',
+            location_name='Brighton',
+            latitude=50.822500,
+            longitude=-0.137200,
+        )
+
+    def test_owner_can_edit_report(self):
+        self.client.login(
+            username='owner',
+            password='testpassword123'
+        )
+
+        response = self.client.post(
+            reverse(
+                'reports:report_edit',
+                args=[self.report.pk],
+            ),
+            {
+                'title': 'Updated owner report',
+                'tree_species': 'Oak',
+                'description': 'Updated description.',
+                'location_name': 'Brighton',
+                'latitude': '50.822500',
+                'longitude': '-0.137200',
+                'what3words': '',
+                'visibility': 'PUBLIC',
+            },
+        )
+
+        self.report.refresh_from_db()
+
+        self.assertEqual(
+            self.report.title,
+            'Updated owner report'
+        )
+        self.assertEqual(response.status_code, 302)
+
+    def test_other_user_cannot_edit_report(self):
+        self.client.login(
+            username='otheruser',
+            password='testpassword123'
+        )
+
+        response = self.client.get(
+            reverse(
+                'reports:report_edit',
+                args=[self.report.pk],
+            )
+        )
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_owner_can_delete_report(self):
+        self.client.login(
+            username='owner',
+            password='testpassword123'
+        )
+
+        response = self.client.post(
+            reverse(
+                'reports:report_delete',
+                args=[self.report.pk],
+            )
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(
+            TreeReport.objects.filter(
+                pk=self.report.pk
+            ).exists()
+        )
