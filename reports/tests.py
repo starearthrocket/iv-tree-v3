@@ -187,3 +187,51 @@ class TreeReportOwnershipTest(TestCase):
                 pk=self.report.pk
             ).exists()
         )
+
+
+class ProgressUpdateViewTest(TestCase):
+    def setUp(self):
+        self.owner = User.objects.create_user(
+            username='progressowner',
+            password='testpassword123'
+        )
+
+        self.report = TreeReport.objects.create(
+            owner=self.owner,
+            title='Monitored oak',
+            description='Tree being monitored.',
+            location_name='Brighton',
+            latitude=50.822500,
+            longitude=-0.137200,
+        )
+
+    def test_owner_can_add_progress_update(self):
+        self.client.login(
+            username='progressowner',
+            password='testpassword123'
+        )
+
+        response = self.client.post(
+            reverse(
+                'reports:progress_create',
+                args=[self.report.pk],
+            ),
+            {
+                'description': 'Ivy has been cut around the base.',
+                'status': TreeReport.Status.IN_PROGRESS,
+            },
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            self.report.progress_updates.count(),
+            1
+        )
+
+        update = self.report.progress_updates.first()
+
+        self.assertEqual(update.author, self.owner)
+        self.assertEqual(
+            update.status,
+            TreeReport.Status.IN_PROGRESS
+        )
