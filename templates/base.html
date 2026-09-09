@@ -25,7 +25,11 @@
 <body>
     <header class="site-header">
         <div class="header-inner">
-            <a href="{% url 'core:home' %}" class="brand" aria-label="I-V Tree home">
+            <a
+                href="{% url 'core:home' %}"
+                class="brand"
+                aria-label="I-V Tree home"
+            >
                 <img
                     src="{% static 'logos/iv-tree-logo-simple(1).png' %}"
                     alt="I-V Tree"
@@ -46,5 +50,52 @@
 
     {% block content %}
     {% endblock %}
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <img
+                    src="{% static 'logos/iv-tree-logo-circle.png' %}"
+                    alt="I-V Tree"
+                    class="footer-logo"
+                >
+
+                <div>
+                    <h2>I-V Tree</h2>
+                    <p>
+                        Report. Protect. Monitor.
+                    </p>
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <div>
+                    <h3>Explore</h3>
+                    <a href="{% url 'core:home' %}">Home</a>
+                    <a href="#">Map</a>
+                    <a href="#">Report a Tree</a>
+                </div>
+
+                <div>
+                    <h3>Community</h3>
+                    <a href="#">Community</a>
+                    <a href="#">Support</a>
+                    <a href="#">About</a>
+                </div>
+
+                <div>
+                    <h3>Account</h3>
+                    <a href="#">Login</a>
+                    <a href="#">Register</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>
+                &copy; {% now "Y" %} I-V Tree. Built to help protect trees.
+            </p>
+        </div>
+    </footer>
 </body>
 </html>

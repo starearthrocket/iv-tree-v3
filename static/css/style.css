@@ -588,3 +588,225 @@ a {
         padding: 1rem;
     }
 }
+
+/* ----------------------------------------
+   Community section
+---------------------------------------- */
+
+.community-section {
+    padding: 6rem 0;
+    background-color: var(--cream);
+}
+
+.community-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.community-content h2 {
+    max-width: 620px;
+    margin: 0 0 1.5rem;
+    color: var(--forest-deep);
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+    font-size: clamp(2.4rem, 4vw, 3.6rem);
+    line-height: 1.12;
+}
+
+.community-content > p:not(.section-eyebrow) {
+    max-width: 620px;
+    margin: 0 0 1rem;
+    color: #555b55;
+    line-height: 1.8;
+}
+
+.button-community {
+    margin-top: 1rem;
+    background-color: var(--forest-deep);
+    color: var(--white);
+}
+
+.button-community:hover,
+.button-community:focus-visible {
+    background-color: var(--forest-green);
+}
+
+.community-card {
+    padding: 3rem;
+    background-color: var(--forest-deep);
+    color: var(--white);
+    border-radius: 24px;
+    box-shadow: 0 18px 40px rgba(15, 61, 46, 0.14);
+}
+
+.community-card-label {
+    color: var(--sand);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.community-card h3 {
+    margin: 1rem 0;
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+    font-size: 2rem;
+    line-height: 1.25;
+}
+
+.community-card > p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.82);
+    line-height: 1.8;
+}
+
+.community-stat-grid {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.community-stat-grid div {
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.community-stat-grid strong,
+.community-stat-grid span {
+    display: block;
+}
+
+.community-stat-grid strong {
+    margin-bottom: 0.3rem;
+    color: var(--sand);
+}
+
+.community-stat-grid span {
+    font-size: 0.78rem;
+    line-height: 1.5;
+}
+
+
+/* ----------------------------------------
+   Footer
+---------------------------------------- */
+
+.site-footer {
+    background-color: var(--forest-deep);
+    color: var(--white);
+}
+
+.footer-inner {
+    width: min(1200px, 92%);
+    margin: 0 auto;
+    padding: 4rem 0 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 4rem;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.footer-logo {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+}
+
+.footer-brand h2 {
+    margin: 0;
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+    font-size: 1.8rem;
+}
+
+.footer-brand p {
+    margin: 0.3rem 0 0;
+    color: var(--sand);
+}
+
+.footer-links {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.footer-links h3 {
+    margin: 0 0 1rem;
+    color: var(--sand);
+    font-size: 0.9rem;
+}
+
+.footer-links a {
+    margin-bottom: 0.6rem;
+    display: block;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.9rem;
+}
+
+.footer-links a:hover,
+.footer-links a:focus-visible {
+    color: var(--white);
+}
+
+.footer-bottom {
+    width: min(1200px, 92%);
+    margin: 0 auto;
+    padding: 1.25rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.footer-bottom p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.8rem;
+}
+
+
+/* ----------------------------------------
+   Community and footer responsive
+---------------------------------------- */
+
+@media (max-width: 850px) {
+    .community-grid,
+    .footer-inner {
+        grid-template-columns: 1fr;
+    }
+
+    .community-grid {
+        gap: 2.5rem;
+    }
+
+    .footer-inner {
+        gap: 3rem;
+    }
+}
+
+@media (max-width: 520px) {
+    .community-section {
+        padding: 4rem 0;
+    }
+
+    .community-card {
+        padding: 2rem;
+    }
+
+    .community-stat-grid,
+    .footer-links {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-brand {
+        align-items: flex-start;
+    }
+
+    .footer-logo {
+        width: 72px;
+        height: 72px;
+    }
+}
