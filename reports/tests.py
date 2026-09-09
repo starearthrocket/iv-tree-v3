@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
+from django.urls import reverse
 
 from .models import ProgressUpdate, TreeReport
 
@@ -44,11 +45,57 @@ class TreeReportModelTest(TestCase):
 
         self.assertEqual(update.tree_report, report)
         self.assertEqual(update.author, self.user)
-        self.assertEqual(
-            report.progress_updates.count(),
-            1
-        )
+        self.assertEqual(report.progress_updates.count(), 1)
         self.assertEqual(
             str(update),
             'Update for Ivy-covered beech'
         )
+
+
+class TreeReportViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username='reporter',
+            password='testpassword123'
+        )
+
+        self.public_report = TreeReport.objects.create(
+            owner=self.user,
+            title='Public oak report',
+            description='Visible public tree report.',
+            location_name='Brighton',
+            latitude=50.822500,
+            longitude=-0.137200,
+            visibility=TreeReport.Visibility.PUBLIC,
+        )
+
+        self.private_report = TreeReport.objects.create(
+            owner=self.user,
+            title='Private oak report',
+            description='Private tree report.',
+            location_name='Brighton',
+            latitude=50.823000,
+            longitude=-0.138000,
+            visibility=TreeReport.Visibility.PRIVATE,
+        )
+
+    def test_report_list_only_shows_public_reports(self):
+        response = self.client.get(
+            reverse('reports:report_list')
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Public oak report')
+        self.assertNotContains(response, 'Private oak report')
+
+    def test_public_report_detail_page(self):
+        response = self.client.get(
+            reverse(
+                'reports:report_detail',
+                args=[self.public_report.pk],
+            )
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Public oak report')
+        self.assertContains(response, 'Brighton')
