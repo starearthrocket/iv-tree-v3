@@ -1,20 +1,35 @@
 {% extends 'base.html' %}
 
-{% block title %}Add Progress Update | I-V Tree{% endblock %}
+{% block title %}
+    {% if update %}
+        Edit Progress Update | I-V Tree
+    {% else %}
+        Add Progress Update | I-V Tree
+    {% endif %}
+{% endblock %}
 
 {% block content %}
 <main>
     <section class="report-form-section">
         <div class="section-container">
             <div class="report-form-heading">
-                <p class="section-eyebrow">Progress update</p>
+                {% if update %}
+                    <p class="section-eyebrow">Edit update</p>
+                    <h1>Update progress record</h1>
 
-                <h1>Update {{ report.title }}</h1>
+                    <p>
+                        Change the progress information recorded for
+                        {{ report.title }}.
+                    </p>
+                {% else %}
+                    <p class="section-eyebrow">Progress update</p>
+                    <h1>Update {{ report.title }}</h1>
 
-                <p>
-                    Record what has changed, what action was taken,
-                    and the tree's current status.
-                </p>
+                    <p>
+                        Record what has changed, what action was taken,
+                        and the tree's current status.
+                    </p>
+                {% endif %}
             </div>
 
             <form
@@ -42,7 +57,11 @@
                         type="submit"
                         class="button button-primary"
                     >
-                        Add Progress Update
+                        {% if update %}
+                            Save Changes
+                        {% else %}
+                            Add Progress Update
+                        {% endif %}
                     </button>
 
                     <a

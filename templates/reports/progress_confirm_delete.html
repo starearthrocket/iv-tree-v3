@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Progress Update | I-V Tree{% endblock %}
+
+{% block content %}
+<main>
+    <section class="delete-section">
+        <div class="section-container">
+            <div class="delete-card">
+                <p class="section-eyebrow">Delete update</p>
+
+                <h1>Delete this progress update?</h1>
+
+                <p>
+                    You are about to remove the progress update recorded
+                    for <strong>{{ report.title }}</strong>.
+                </p>
+
+                <p>
+                    This action cannot be undone.
+                </p>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="form-actions">
+                        <button
+                            type="submit"
+                            class="button button-danger"
+                        >
+                            Yes, Delete Update
+                        </button>
+
+                        <a
+                            href="{% url 'reports:report_detail' report.pk %}"
+                            class="button button-outline-dark"
+                        >
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

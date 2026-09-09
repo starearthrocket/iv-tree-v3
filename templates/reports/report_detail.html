@@ -201,6 +201,24 @@
                                         class="progress-photo"
                                     >
                                 {% endif %}
+
+                                {% if user.is_authenticated and update.author == user %}
+                                    <div class="progress-actions">
+                                        <a
+                                            href="{% url 'reports:progress_edit' update.pk %}"
+                                            class="text-link"
+                                        >
+                                            Edit Update
+                                        </a>
+
+                                        <a
+                                            href="{% url 'reports:progress_delete' update.pk %}"
+                                            class="delete-text-link"
+                                        >
+                                            Delete Update
+                                        </a>
+                                    </div>
+                                {% endif %}
                             </div>
                         </article>
                     {% empty %}

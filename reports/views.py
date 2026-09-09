@@ -4,7 +4,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import ProgressUpdateForm, TreeReportForm
-from .models import TreeReport
+from .models import ProgressUpdate, TreeReport
 
 
 def report_list(request):
@@ -182,6 +182,102 @@ def progress_create(request, pk):
         'reports/progress_form.html',
         {
             'form': form,
+            'report': report,
+            'update': None,
+        },
+    )
+
+
+@login_required
+def progress_edit(request, pk):
+    """Allow only the update author to edit a progress update."""
+
+    update = get_object_or_404(
+        ProgressUpdate,
+        pk=pk,
+        author=request.user,
+    )
+
+    report = update.tree_report
+
+    if request.method == 'POST':
+        form = ProgressUpdateForm(
+            request.POST,
+            request.FILES,
+            instance=update,
+        )
+
+        if form.is_valid():
+            update = form.save()
+
+            if update.status:
+                report.status = update.status
+                report.save(update_fields=['status', 'updated_at'])
+
+            messages.success(
+                request,
+                'Progress update changed successfully.'
+            )
+
+            return redirect(
+                'reports:report_detail',
+                pk=report.pk,
+            )
+    else:
+        form = ProgressUpdateForm(instance=update)
+
+    return render(
+        request,
+        'reports/progress_form.html',
+        {
+            'form': form,
+            'report': report,
+            'update': update,
+        },
+    )
+
+
+@login_required
+def progress_delete(request, pk):
+    """Allow only the update author to delete a progress update."""
+
+    update = get_object_or_404(
+        ProgressUpdate,
+        pk=pk,
+        author=request.user,
+    )
+
+    report = update.tree_report
+
+    if request.method == 'POST':
+        update.delete()
+
+        latest_update = report.progress_updates.exclude(
+            status=''
+        ).first()
+
+        if latest_update:
+            report.status = latest_update.status
+        else:
+            report.status = TreeReport.Status.ACTIVE
+
+        report.save(update_fields=['status', 'updated_at'])
+
+        messages.success(
+            request,
+            'Progress update deleted.'
+        )
+
+        return redirect(
+            'reports:report_detail',
+            pk=report.pk,
+        )
+
+    return render(
+        request,
+        'reports/progress_confirm_delete.html',
+        {
+            'update': update,
             'report': report,
         },
     )

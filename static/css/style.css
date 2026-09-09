@@ -1292,3 +1292,26 @@ a {
         padding: 2rem;
     }
 }
+
+/* ----------------------------------------
+   Progress update actions
+---------------------------------------- */
+
+.progress-actions {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    border-top: 1px solid rgba(15, 61, 46, 0.1);
+}
+
+.delete-text-link {
+    color: #a33232;
+    font-weight: 600;
+}
+
+.delete-text-link:hover,
+.delete-text-link:focus-visible {
+    color: #7d2525;
+}
