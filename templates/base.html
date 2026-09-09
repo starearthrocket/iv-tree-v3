@@ -13,9 +13,37 @@
         type="image/png"
         href="{% static 'logos/favicon.png' %}"
     >
+
+    <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap"
+    >
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 
 <body>
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="{% url 'core:home' %}" class="brand" aria-label="I-V Tree home">
+                <img
+                    src="{% static 'logos/iv-tree-logo-simple(1).png' %}"
+                    alt="I-V Tree"
+                    class="site-logo"
+                >
+            </a>
+
+            <nav class="main-nav" aria-label="Main navigation">
+                <a href="{% url 'core:home' %}">Home</a>
+                <a href="#">Explore Map</a>
+                <a href="#">Report a Tree</a>
+                <a href="#">Community</a>
+                <a href="#">Support</a>
+                <a href="#">Login</a>
+            </nav>
+        </div>
+    </header>
+
     {% block content %}
     {% endblock %}
 </body>

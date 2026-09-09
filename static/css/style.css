@@ -1,0 +1,227 @@
+/* ----------------------------------------
+   Global styles
+---------------------------------------- */
+
+:root {
+    --forest-deep: #0f3d2e;
+    --forest-green: #166b3a;
+    --leaf-green: #4caf50;
+    --sage: #8fbe8f;
+    --cream: #f7f5ec;
+    --sand: #e9e3c9;
+    --charcoal: #1f1f1f;
+    --white: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background-color: var(--cream);
+    color: var(--charcoal);
+    font-family: "Poppins", Arial, Helvetica, sans-serif;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+/* ----------------------------------------
+   Header
+---------------------------------------- */
+
+.site-header {
+    background-color: var(--cream);
+    border-bottom: 1px solid rgba(15, 61, 46, 0.12);
+}
+
+.header-inner {
+    width: min(1200px, 92%);
+    min-height: 82px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.site-logo {
+    width: 135px;
+    height: auto;
+}
+
+.main-nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.main-nav a {
+    color: var(--forest-deep);
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.main-nav a:hover,
+.main-nav a:focus-visible {
+    color: var(--leaf-green);
+}
+
+
+/* ----------------------------------------
+   Homepage hero
+---------------------------------------- */
+
+.hero {
+    position: relative;
+    min-height: 650px;
+    display: flex;
+    align-items: center;
+    background-image: url("../backgrounds/hero-home.jpg");
+    background-position: center;
+    background-size: cover;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(15, 61, 46, 0.92) 0%,
+            rgba(15, 61, 46, 0.72) 45%,
+            rgba(15, 61, 46, 0.18) 100%
+        );
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    width: min(1200px, 92%);
+    margin: 0 auto;
+    padding: 5rem 0;
+    color: var(--white);
+}
+
+.hero-content > * {
+    max-width: 680px;
+}
+
+.hero-eyebrow {
+    margin: 0 0 1rem;
+    color: var(--sand);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.hero h1 {
+    margin: 0;
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    line-height: 1.05;
+}
+
+.hero-text {
+    margin: 1.5rem 0 2rem;
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0.8rem 1.5rem;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.button-primary {
+    background-color: var(--leaf-green);
+    color: var(--white);
+}
+
+.button-primary:hover,
+.button-primary:focus-visible {
+    background-color: var(--forest-green);
+}
+
+.button-secondary {
+    border-color: var(--white);
+    color: var(--white);
+}
+
+.button-secondary:hover,
+.button-secondary:focus-visible {
+    background-color: var(--white);
+    color: var(--forest-deep);
+}
+
+
+/* ----------------------------------------
+   Responsive navigation and hero
+---------------------------------------- */
+
+@media (max-width: 850px) {
+    .header-inner {
+        padding: 1rem 0;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .main-nav {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.75rem 1.25rem;
+    }
+
+    .hero {
+        min-height: 560px;
+    }
+
+    .hero-overlay {
+        background: rgba(15, 61, 46, 0.78);
+    }
+}
+
+@media (max-width: 520px) {
+    .site-logo {
+        width: 125px;
+    }
+
+    .main-nav {
+        font-size: 0.9rem;
+    }
+
+    .hero-content {
+        padding: 4rem 0;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
