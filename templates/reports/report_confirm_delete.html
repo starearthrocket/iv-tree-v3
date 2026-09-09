@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete {{ report.title }} | I-V Tree{% endblock %}
+
+{% block content %}
+<main>
+    <section class="delete-section">
+        <div class="section-container">
+            <div class="delete-card">
+                <p class="section-eyebrow">Delete report</p>
+
+                <h1>Delete this tree report?</h1>
+
+                <p>
+                    You are about to permanently delete
+                    <strong>{{ report.title }}</strong>.
+                </p>
+
+                <p>
+                    This action cannot be undone and any progress updates
+                    belonging to this report will also be removed.
+                </p>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="form-actions">
+                        <button
+                            type="submit"
+                            class="button button-danger"
+                        >
+                            Yes, Delete Report
+                        </button>
+
+                        <a
+                            href="{% url 'reports:report_detail' report.pk %}"
+                            class="button button-outline-dark"
+                        >
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

@@ -1197,3 +1197,98 @@ a {
         padding: 3.5rem 0 4rem;
     }
 }
+
+/* ----------------------------------------
+   Report ownership actions
+---------------------------------------- */
+
+.owner-actions,
+.form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.owner-actions {
+    margin: -1rem 0 2rem;
+}
+
+.button-outline-dark {
+    border-color: var(--forest-deep);
+    color: var(--forest-deep);
+}
+
+.button-outline-dark:hover,
+.button-outline-dark:focus-visible {
+    background-color: var(--forest-deep);
+    color: var(--white);
+}
+
+.button-danger {
+    background-color: #a33232;
+    color: var(--white);
+}
+
+.button-danger:hover,
+.button-danger:focus-visible {
+    background-color: #7d2525;
+}
+
+.button-danger-outline {
+    border-color: #a33232;
+    color: #a33232;
+}
+
+.button-danger-outline:hover,
+.button-danger-outline:focus-visible {
+    background-color: #a33232;
+    color: var(--white);
+}
+
+
+/* ----------------------------------------
+   Delete confirmation
+---------------------------------------- */
+
+.delete-section {
+    padding: 6rem 0;
+    background-color: var(--cream);
+}
+
+.delete-card {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 3rem;
+    background-color: var(--white);
+    border: 1px solid rgba(15, 61, 46, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(15, 61, 46, 0.06);
+}
+
+.delete-card h1 {
+    margin: 0 0 1.25rem;
+    color: var(--forest-deep);
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+}
+
+.delete-card > p:not(.section-eyebrow) {
+    color: #555b55;
+    line-height: 1.8;
+}
+
+.delete-card form {
+    margin-top: 2rem;
+}
+
+@media (max-width: 520px) {
+    .owner-actions,
+    .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .delete-card {
+        padding: 2rem;
+    }
+}

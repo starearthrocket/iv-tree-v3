@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import TreeReportForm
@@ -21,13 +22,15 @@ def report_list(request):
 
 
 def report_detail(request, pk):
-    """Display one public tree report and its progress history."""
+    """Display a public report or a private report to its owner."""
 
-    report = get_object_or_404(
-        TreeReport,
-        pk=pk,
-        visibility=TreeReport.Visibility.PUBLIC,
-    )
+    report = get_object_or_404(TreeReport, pk=pk)
+
+    if (
+        report.visibility != TreeReport.Visibility.PUBLIC
+        and report.owner != request.user
+    ):
+        raise Http404
 
     return render(
         request,
@@ -63,5 +66,77 @@ def report_create(request):
     return render(
         request,
         'reports/report_form.html',
-        {'form': form},
+        {
+            'form': form,
+            'report': None,
+        },
+    )
+
+
+@login_required
+def report_edit(request, pk):
+    """Allow only the report owner to edit their report."""
+
+    report = get_object_or_404(
+        TreeReport,
+        pk=pk,
+        owner=request.user,
+    )
+
+    if request.method == 'POST':
+        form = TreeReportForm(
+            request.POST,
+            request.FILES,
+            instance=report,
+        )
+
+        if form.is_valid():
+            form.save()
+
+            messages.success(
+                request,
+                'Your tree report has been updated successfully.'
+            )
+
+            return redirect(
+                'reports:report_detail',
+                pk=report.pk,
+            )
+    else:
+        form = TreeReportForm(instance=report)
+
+    return render(
+        request,
+        'reports/report_form.html',
+        {
+            'form': form,
+            'report': report,
+        },
+    )
+
+
+@login_required
+def report_delete(request, pk):
+    """Allow only the report owner to delete their report."""
+
+    report = get_object_or_404(
+        TreeReport,
+        pk=pk,
+        owner=request.user,
+    )
+
+    if request.method == 'POST':
+        report.delete()
+
+        messages.success(
+            request,
+            'Your tree report has been deleted.'
+        )
+
+        return redirect('reports:report_list')
+
+    return render(
+        request,
+        'reports/report_confirm_delete.html',
+        {'report': report},
     )

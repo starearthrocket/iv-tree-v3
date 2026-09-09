@@ -1,19 +1,34 @@
 {% extends 'base.html' %}
 
-{% block title %}Report a Tree | I-V Tree{% endblock %}
+{% block title %}
+    {% if report %}
+        Edit {{ report.title }} | I-V Tree
+    {% else %}
+        Report a Tree | I-V Tree
+    {% endif %}
+{% endblock %}
 
 {% block content %}
 <main>
     <section class="report-form-section">
         <div class="section-container">
             <div class="report-form-heading">
-                <p class="section-eyebrow">Report a tree</p>
-                <h1>Help us record an affected tree</h1>
+                {% if report %}
+                    <p class="section-eyebrow">Edit report</p>
+                    <h1>Update your tree report</h1>
 
-                <p>
-                    Add what you know about the tree and its location.
-                    You will be able to update its progress over time.
-                </p>
+                    <p>
+                        Update the information recorded for this tree.
+                    </p>
+                {% else %}
+                    <p class="section-eyebrow">Report a tree</p>
+                    <h1>Help us record an affected tree</h1>
+
+                    <p>
+                        Add what you know about the tree and its location.
+                        You can continue adding progress updates over time.
+                    </p>
+                {% endif %}
             </div>
 
             <form
@@ -32,7 +47,6 @@
                 {% for field in form %}
                     <div class="form-group">
                         {{ field.label_tag }}
-
                         {{ field }}
 
                         {% if field.help_text %}
@@ -47,12 +61,27 @@
                     </div>
                 {% endfor %}
 
-                <button
-                    type="submit"
-                    class="button button-primary"
-                >
-                    Submit Report
-                </button>
+                <div class="form-actions">
+                    <button
+                        type="submit"
+                        class="button button-primary"
+                    >
+                        {% if report %}
+                            Save Changes
+                        {% else %}
+                            Submit Report
+                        {% endif %}
+                    </button>
+
+                    {% if report %}
+                        <a
+                            href="{% url 'reports:report_detail' report.pk %}"
+                            class="button button-outline-dark"
+                        >
+                            Cancel
+                        </a>
+                    {% endif %}
+                </div>
             </form>
         </div>
     </section>

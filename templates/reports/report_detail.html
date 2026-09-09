@@ -17,6 +17,7 @@
             <div class="report-detail-header">
                 <div>
                     <p class="section-eyebrow">Tree report</p>
+
                     <h1>{{ report.title }}</h1>
 
                     <div class="report-meta">
@@ -64,6 +65,24 @@
                     >
                 {% endif %}
             </div>
+
+            {% if user.is_authenticated and report.owner == user %}
+                <div class="owner-actions">
+                    <a
+                        href="{% url 'reports:report_edit' report.pk %}"
+                        class="button button-outline-dark"
+                    >
+                        Edit Report
+                    </a>
+
+                    <a
+                        href="{% url 'reports:report_delete' report.pk %}"
+                        class="button button-danger-outline"
+                    >
+                        Delete Report
+                    </a>
+                </div>
+            {% endif %}
 
             <div class="report-detail-grid">
                 <article class="report-detail-main">
@@ -119,6 +138,7 @@
 
                         <div class="detail-map-placeholder">
                             <p>Interactive map</p>
+
                             <span>
                                 Google Maps will display this report here.
                             </span>
@@ -171,6 +191,7 @@
                     {% empty %}
                         <div class="progress-empty">
                             <h3>No progress updates yet</h3>
+
                             <p>
                                 Updates will appear here as work on this
                                 tree is recorded.
