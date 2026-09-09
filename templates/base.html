@@ -62,7 +62,7 @@
                 </a>
 
                 {% if user.is_authenticated %}
-                    <a href="#">
+                    <a href="{% url 'accounts:dashboard' %}">
                         Dashboard
                     </a>
 
@@ -158,8 +158,12 @@
                     <h3>Account</h3>
 
                     {% if user.is_authenticated %}
-                        <a href="#">
+                        <a href="{% url 'accounts:dashboard' %}">
                             Dashboard
+                        </a>
+
+                        <a href="{% url 'accounts:profile' %}">
+                            Profile
                         </a>
                     {% else %}
                         <a href="{% url 'accounts:login' %}">

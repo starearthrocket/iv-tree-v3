@@ -2,6 +2,9 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
+from community.models import CommunityPost
+from reports.models import ProgressUpdate, TreeReport
+
 from .forms import ProfileForm, RegistrationForm
 from .models import Profile
 
@@ -70,4 +73,41 @@ def profile(request):
             'profile': user_profile,
             'avatar_options': Profile.Avatar.choices,
         },
+    )
+
+
+@login_required
+def dashboard(request):
+    """Show the logged-in user's I-V Tree activity."""
+
+    user_profile, created = Profile.objects.get_or_create(
+        user=request.user
+    )
+
+    my_reports = TreeReport.objects.filter(
+        owner=request.user
+    )
+
+    my_updates = ProgressUpdate.objects.filter(
+        author=request.user
+    )
+
+    my_posts = CommunityPost.objects.filter(
+        author=request.user
+    )
+
+    context = {
+        'profile': user_profile,
+        'my_reports': my_reports,
+        'my_updates': my_updates,
+        'my_posts': my_posts,
+        'report_count': my_reports.count(),
+        'update_count': my_updates.count(),
+        'post_count': my_posts.count(),
+    }
+
+    return render(
+        request,
+        'accounts/dashboard.html',
+        context,
     )

@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Dashboard | I-V Tree{% endblock %}
+
+{% block content %}
+<main>
+    <section class="dashboard-section">
+        <div class="section-container">
+            <div class="dashboard-header">
+                <div>
+                    <p class="section-eyebrow">My dashboard</p>
+
+                    <h1>Welcome back, {{ user.username }}</h1>
+
+                    <p>
+                        Manage your reports, progress updates and
+                        community activity in one place.
+                    </p>
+                </div>
+
+                <a
+                    href="{% url 'accounts:profile' %}"
+                    class="dashboard-profile-link"
+                >
+                    <img
+                        src="{% static 'avatars/' %}{{ profile.avatar_choice }}"
+                        alt="{{ profile.get_avatar_choice_display }}"
+                    >
+
+                    <span>Edit Profile</span>
+                </a>
+            </div>
+
+            <div class="dashboard-stats">
+                <div class="dashboard-stat">
+                    <strong>{{ report_count }}</strong>
+                    <span>My Reports</span>
+                </div>
+
+                <div class="dashboard-stat">
+                    <strong>{{ update_count }}</strong>
+                    <span>My Updates</span>
+                </div>
+
+                <div class="dashboard-stat">
+                    <strong>{{ post_count }}</strong>
+                    <span>My Posts</span>
+                </div>
+            </div>
+
+            <div class="dashboard-panels">
+                <section class="dashboard-panel">
+                    <div class="dashboard-panel-heading">
+                        <h2>My Reports</h2>
+
+                        <a
+                            href="{% url 'reports:report_create' %}"
+                            class="text-link"
+                        >
+                            + Report a Tree
+                        </a>
+                    </div>
+
+                    {% for report in my_reports %}
+                        <article class="dashboard-item">
+                            <div>
+                                <span class="dashboard-status">
+                                    {{ report.get_status_display }}
+                                </span>
+
+                                <h3>{{ report.title }}</h3>
+
+                                <p>{{ report.location_name }}</p>
+                            </div>
+
+                            <a
+                                href="{% url 'reports:report_detail' report.pk %}"
+                                class="text-link"
+                            >
+                                View →
+                            </a>
+                        </article>
+                    {% empty %}
+                        <div class="dashboard-empty">
+                            <p>You haven't reported any trees yet.</p>
+                        </div>
+                    {% endfor %}
+                </section>
+
+                <section class="dashboard-panel">
+                    <div class="dashboard-panel-heading">
+                        <h2>My Updates</h2>
+                    </div>
+
+                    {% for update in my_updates %}
+                        <article class="dashboard-item">
+                            <div>
+                                <span class="dashboard-status">
+                                    {% if update.status %}
+                                        {{ update.get_status_display }}
+                                    {% else %}
+                                        Update
+                                    {% endif %}
+                                </span>
+
+                                <h3>{{ update.tree_report.title }}</h3>
+
+                                <p>{{ update.description }}</p>
+                            </div>
+
+                            <a
+                                href="{% url 'reports:report_detail' update.tree_report.pk %}"
+                                class="text-link"
+                            >
+                                View →
+                            </a>
+                        </article>
+                    {% empty %}
+                        <div class="dashboard-empty">
+                            <p>You haven't added any progress updates yet.</p>
+                        </div>
+                    {% endfor %}
+                </section>
+
+                <section class="dashboard-panel">
+                    <div class="dashboard-panel-heading">
+                        <h2>My Posts</h2>
+                    </div>
+
+                    {% for post in my_posts %}
+                        <article class="dashboard-item">
+                            <div>
+                                <span class="dashboard-status">
+                                    Community
+                                </span>
+
+                                <h3>{{ post.title }}</h3>
+
+                                <p>
+                                    {{ post.content|truncatewords:18 }}
+                                </p>
+                            </div>
+                        </article>
+                    {% empty %}
+                        <div class="dashboard-empty">
+                            <p>
+                                You haven't created any community posts yet.
+                            </p>
+                        </div>
+                    {% endfor %}
+                </section>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}
