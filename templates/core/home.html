@@ -47,9 +47,7 @@
             <div class="feature-grid">
                 <article class="feature-card">
                     <div class="feature-number">01</div>
-
                     <h3>Report</h3>
-
                     <p>
                         Record an affected tree with its location,
                         description and photograph.
@@ -58,9 +56,7 @@
 
                 <article class="feature-card">
                     <div class="feature-number">02</div>
-
                     <h3>Protect</h3>
-
                     <p>
                         Share useful information and record action taken
                         to help protect the tree.
@@ -69,14 +65,145 @@
 
                 <article class="feature-card">
                     <div class="feature-number">03</div>
-
                     <h3>Monitor</h3>
-
                     <p>
                         Add progress updates over time and build a visible
                         history of the tree's condition.
                     </p>
                 </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent reports and map -->
+    <section class="reports-map-section">
+        <div class="section-container">
+            <div class="reports-map-heading">
+                <div>
+                    <p class="section-eyebrow">Community reports</p>
+                    <h2>See what is happening nearby</h2>
+                </div>
+
+                <a href="#" class="text-link">
+                    Explore all reports →
+                </a>
+            </div>
+
+            <div class="reports-map-grid">
+                <div class="recent-reports-panel">
+                    <h3>Recent Reports</h3>
+
+                    <div class="report-list">
+                        <article class="report-preview">
+                            <img
+                                src="{% static 'map-markers/marker-active.png' %}"
+                                alt=""
+                                class="report-marker"
+                            >
+
+                            <div>
+                                <span class="status status-active">Active</span>
+                                <h4>Recently reported tree</h4>
+                                <p>
+                                    New reports will appear here once
+                                    community members begin adding trees.
+                                </p>
+                            </div>
+                        </article>
+
+                        <article class="report-preview">
+                            <img
+                                src="{% static 'map-markers/marker-progress.png' %}"
+                                alt=""
+                                class="report-marker"
+                            >
+
+                            <div>
+                                <span class="status status-progress">
+                                    In Progress
+                                </span>
+                                <h4>Progress updates</h4>
+                                <p>
+                                    Reports can be updated over time to show
+                                    work completed and changes in condition.
+                                </p>
+                            </div>
+                        </article>
+
+                        <article class="report-preview">
+                            <img
+                                src="{% static 'map-markers/marker-protected.png' %}"
+                                alt=""
+                                class="report-marker"
+                            >
+
+                            <div>
+                                <span class="status status-protected">
+                                    Protected
+                                </span>
+                                <h4>Long-term monitoring</h4>
+                                <p>
+                                    Protected trees remain visible so their
+                                    progress can continue to be monitored.
+                                </p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <div class="map-preview-panel">
+                    <div class="map-placeholder">
+                        <div class="map-placeholder-content">
+                            <img
+                                src="{% static 'map-markers/marker-active.png' %}"
+                                alt=""
+                                class="map-preview-marker marker-one"
+                            >
+
+                            <img
+                                src="{% static 'map-markers/marker-progress.png' %}"
+                                alt=""
+                                class="map-preview-marker marker-two"
+                            >
+
+                            <img
+                                src="{% static 'map-markers/marker-protected.png' %}"
+                                alt=""
+                                class="map-preview-marker marker-three"
+                            >
+
+                            <div class="map-message">
+                                <p class="section-eyebrow">Explore reports</p>
+                                <h3>I-V Tree Map</h3>
+                                <p>
+                                    Report locations will be displayed here
+                                    using the interactive map.
+                                </p>
+
+                                <a href="#" class="button button-map">
+                                    Open Map
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="map-legend">
+                        <span>
+                            <i class="legend-dot active-dot"></i>
+                            Active
+                        </span>
+
+                        <span>
+                            <i class="legend-dot progress-dot"></i>
+                            In Progress
+                        </span>
+
+                        <span>
+                            <i class="legend-dot protected-dot"></i>
+                            Protected
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

@@ -84,7 +84,7 @@ a {
 
 
 /* ----------------------------------------
-   Homepage hero
+   Hero
 ---------------------------------------- */
 
 .hero {
@@ -150,6 +150,11 @@ a {
     gap: 1rem;
 }
 
+
+/* ----------------------------------------
+   Buttons
+---------------------------------------- */
+
 .button {
     display: inline-flex;
     align-items: center;
@@ -182,25 +187,25 @@ a {
     color: var(--forest-deep);
 }
 
+.button-map {
+    margin-top: 0.5rem;
+    background-color: var(--forest-deep);
+    color: var(--white);
+}
+
+.button-map:hover,
+.button-map:focus-visible {
+    background-color: var(--forest-green);
+}
+
 
 /* ----------------------------------------
-   How it works
+   Shared section styles
 ---------------------------------------- */
-
-.how-it-works {
-    padding: 6rem 0;
-    background-color: var(--cream);
-}
 
 .section-container {
     width: min(1200px, 92%);
     margin: 0 auto;
-}
-
-.section-heading {
-    max-width: 720px;
-    margin: 0 auto 3.5rem;
-    text-align: center;
 }
 
 .section-eyebrow {
@@ -212,7 +217,24 @@ a {
     text-transform: uppercase;
 }
 
-.section-heading h2 {
+
+/* ----------------------------------------
+   How it works
+---------------------------------------- */
+
+.how-it-works {
+    padding: 6rem 0;
+    background-color: var(--cream);
+}
+
+.section-heading {
+    max-width: 720px;
+    margin: 0 auto 3.5rem;
+    text-align: center;
+}
+
+.section-heading h2,
+.reports-map-heading h2 {
     margin: 0 0 1rem;
     color: var(--forest-deep);
     font-family: "Playfair Display", Georgia, "Times New Roman", serif;
@@ -269,6 +291,231 @@ a {
 
 
 /* ----------------------------------------
+   Recent reports and map
+---------------------------------------- */
+
+.reports-map-section {
+    padding: 6rem 0;
+    background-color: #eef2e8;
+}
+
+.reports-map-heading {
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.reports-map-heading h2 {
+    margin-bottom: 0;
+}
+
+.text-link {
+    color: var(--forest-green);
+    font-weight: 600;
+}
+
+.text-link:hover,
+.text-link:focus-visible {
+    color: var(--leaf-green);
+}
+
+.reports-map-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 1.5rem;
+}
+
+.recent-reports-panel,
+.map-preview-panel {
+    background-color: var(--white);
+    border: 1px solid rgba(15, 61, 46, 0.1);
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(15, 61, 46, 0.06);
+    overflow: hidden;
+}
+
+.recent-reports-panel {
+    padding: 2rem;
+}
+
+.recent-reports-panel > h3 {
+    margin: 0 0 1.5rem;
+    color: var(--forest-deep);
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+    font-size: 1.8rem;
+}
+
+.report-list {
+    display: grid;
+    gap: 0;
+}
+
+.report-preview {
+    padding: 1.4rem 0;
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: 1rem;
+    border-top: 1px solid rgba(15, 61, 46, 0.1);
+}
+
+.report-preview:first-child {
+    padding-top: 0;
+    border-top: 0;
+}
+
+.report-marker {
+    width: 42px;
+    margin-top: 0.15rem;
+}
+
+.report-preview h4 {
+    margin: 0.35rem 0 0.35rem;
+    color: var(--forest-deep);
+    font-size: 1rem;
+}
+
+.report-preview p {
+    margin: 0;
+    color: #5a605a;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.status {
+    display: inline-block;
+    padding: 0.25rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.status-active {
+    background-color: #e2f1df;
+    color: #296b2b;
+}
+
+.status-progress {
+    background-color: #fff0d5;
+    color: #9a5b00;
+}
+
+.status-protected {
+    background-color: #e3edf8;
+    color: #2f669c;
+}
+
+
+/* ----------------------------------------
+   Map preview
+---------------------------------------- */
+
+.map-placeholder {
+    min-height: 420px;
+    padding: 2rem;
+    background:
+        linear-gradient(
+            rgba(233, 227, 201, 0.68),
+            rgba(233, 227, 201, 0.68)
+        ),
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 32px,
+            rgba(15, 61, 46, 0.05) 33px,
+            rgba(15, 61, 46, 0.05) 34px
+        );
+}
+
+.map-placeholder-content {
+    position: relative;
+    min-height: 356px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.map-message {
+    max-width: 330px;
+    padding: 2rem;
+    background-color: rgba(247, 245, 236, 0.94);
+    border-radius: 14px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(15, 61, 46, 0.1);
+}
+
+.map-message h3 {
+    margin: 0 0 0.7rem;
+    color: var(--forest-deep);
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+    font-size: 2rem;
+}
+
+.map-message p:not(.section-eyebrow) {
+    margin: 0 0 1rem;
+    color: #555b55;
+    line-height: 1.6;
+}
+
+.map-preview-marker {
+    position: absolute;
+    width: 44px;
+}
+
+.marker-one {
+    top: 12%;
+    left: 15%;
+}
+
+.marker-two {
+    right: 12%;
+    top: 20%;
+}
+
+.marker-three {
+    left: 20%;
+    bottom: 12%;
+}
+
+.map-legend {
+    padding: 1rem 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    background-color: var(--white);
+    border-top: 1px solid rgba(15, 61, 46, 0.1);
+}
+
+.map-legend span {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: #555b55;
+    font-size: 0.8rem;
+}
+
+.legend-dot {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    border-radius: 50%;
+}
+
+.active-dot {
+    background-color: #2f6f2e;
+}
+
+.progress-dot {
+    background-color: #e68b14;
+}
+
+.protected-dot {
+    background-color: #3774b0;
+}
+
+
+/* ----------------------------------------
    Responsive
 ---------------------------------------- */
 
@@ -293,12 +540,18 @@ a {
         background: rgba(15, 61, 46, 0.78);
     }
 
-    .feature-grid {
+    .feature-grid,
+    .reports-map-grid {
         grid-template-columns: 1fr;
     }
 
     .feature-card {
         min-height: auto;
+    }
+
+    .reports-map-heading {
+        align-items: flex-start;
+        flex-direction: column;
     }
 }
 
@@ -320,11 +573,18 @@ a {
         align-items: stretch;
     }
 
-    .how-it-works {
+    .how-it-works,
+    .reports-map-section {
         padding: 4rem 0;
     }
 
-    .feature-card {
+    .feature-card,
+    .recent-reports-panel {
         padding: 1.75rem;
+    }
+
+    .map-placeholder {
+        min-height: 380px;
+        padding: 1rem;
     }
 }
