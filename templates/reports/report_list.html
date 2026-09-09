@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Explore Tree Reports | I-V Tree{% endblock %}
+
+{% block content %}
+<main>
+    <section class="report-list-section">
+        <div class="section-container">
+            <div class="page-heading">
+                <p class="section-eyebrow">Explore reports</p>
+                <h1>Reported Trees</h1>
+                <p>
+                    Browse public reports, see what action has been taken
+                    and follow each tree's progress over time.
+                </p>
+
+                <a
+                    href="{% url 'reports:report_create' %}"
+                    class="button button-primary"
+                >
+                    Report a Tree
+                </a>
+            </div>
+
+            {% if reports %}
+                <div class="tree-report-grid">
+                    {% for report in reports %}
+                        <article class="tree-report-card">
+                            <div class="tree-report-card-top">
+                                {% if report.status == 'IN_PROGRESS' %}
+                                    <img
+                                        src="{% static 'map-markers/marker-progress.png' %}"
+                                        alt=""
+                                        class="report-card-marker"
+                                    >
+                                {% elif report.status == 'PROTECTED' %}
+                                    <img
+                                        src="{% static 'map-markers/marker-protected.png' %}"
+                                        alt=""
+                                        class="report-card-marker"
+                                    >
+                                {% elif report.status == 'RESOLVED' %}
+                                    <img
+                                        src="{% static 'map-markers/marker-resolved.png' %}"
+                                        alt=""
+                                        class="report-card-marker"
+                                    >
+                                {% elif report.status == 'NEEDS_ATTENTION' %}
+                                    <img
+                                        src="{% static 'map-markers/marker-attention.png' %}"
+                                        alt=""
+                                        class="report-card-marker"
+                                    >
+                                {% else %}
+                                    <img
+                                        src="{% static 'map-markers/marker-active.png' %}"
+                                        alt=""
+                                        class="report-card-marker"
+                                    >
+                                {% endif %}
+
+                                <span class="report-status">
+                                    {{ report.get_status_display }}
+                                </span>
+                            </div>
+
+                            <h2>
+                                <a
+                                    href="{% url 'reports:report_detail' report.pk %}"
+                                >
+                                    {{ report.title }}
+                                </a>
+                            </h2>
+
+                            <p class="report-card-location">
+                                {{ report.location_name }}
+                            </p>
+
+                            <p class="report-card-description">
+                                {{ report.description|truncatewords:24 }}
+                            </p>
+
+                            <div class="report-card-footer">
+                                <span>
+                                    {{ report.created_at|date:"j M Y" }}
+                                </span>
+
+                                <a
+                                    href="{% url 'reports:report_detail' report.pk %}"
+                                    class="text-link"
+                                >
+                                    View report →
+                                </a>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <img
+                        src="{% static 'utility/empty-reports.png' %}"
+                        alt=""
+                    >
+
+                    <h2>No trees reported yet</h2>
+
+                    <p>
+                        Be the first to add a tree and help build the
+                        I-V Tree map.
+                    </p>
+
+                    <a
+                        href="{% url 'reports:report_create' %}"
+                        class="button button-primary"
+                    >
+                        Report a Tree
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+</main>
+{% endblock %}

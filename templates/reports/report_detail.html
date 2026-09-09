@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ report.title }} | I-V Tree{% endblock %}
+
+{% block content %}
+<main>
+    <section class="report-detail-section">
+        <div class="section-container">
+            <a
+                href="{% url 'reports:report_list' %}"
+                class="back-link"
+            >
+                ← Back to reports
+            </a>
+
+            <div class="report-detail-header">
+                <div>
+                    <p class="section-eyebrow">Tree report</p>
+                    <h1>{{ report.title }}</h1>
+
+                    <div class="report-meta">
+                        <span class="detail-status">
+                            {{ report.get_status_display }}
+                        </span>
+
+                        <span>{{ report.location_name }}</span>
+
+                        <span>
+                            Reported {{ report.created_at|date:"j F Y" }}
+                        </span>
+                    </div>
+                </div>
+
+                {% if report.status == 'IN_PROGRESS' %}
+                    <img
+                        src="{% static 'map-markers/marker-progress.png' %}"
+                        alt=""
+                        class="detail-marker"
+                    >
+                {% elif report.status == 'PROTECTED' %}
+                    <img
+                        src="{% static 'map-markers/marker-protected.png' %}"
+                        alt=""
+                        class="detail-marker"
+                    >
+                {% elif report.status == 'RESOLVED' %}
+                    <img
+                        src="{% static 'map-markers/marker-resolved.png' %}"
+                        alt=""
+                        class="detail-marker"
+                    >
+                {% elif report.status == 'NEEDS_ATTENTION' %}
+                    <img
+                        src="{% static 'map-markers/marker-attention.png' %}"
+                        alt=""
+                        class="detail-marker"
+                    >
+                {% else %}
+                    <img
+                        src="{% static 'map-markers/marker-active.png' %}"
+                        alt=""
+                        class="detail-marker"
+                    >
+                {% endif %}
+            </div>
+
+            <div class="report-detail-grid">
+                <article class="report-detail-main">
+                    {% if report.photo %}
+                        <img
+                            src="{{ report.photo.url }}"
+                            alt="Photograph of {{ report.title }}"
+                            class="report-detail-photo"
+                        >
+                    {% else %}
+                        <div class="report-photo-placeholder">
+                            <span>No photograph added</span>
+                        </div>
+                    {% endif %}
+
+                    <div class="report-information-card">
+                        <h2>About this tree</h2>
+
+                        <p>{{ report.description }}</p>
+
+                        <dl class="report-facts">
+                            <div>
+                                <dt>Tree species</dt>
+                                <dd>
+                                    {% if report.tree_species %}
+                                        {{ report.tree_species }}
+                                    {% else %}
+                                        Unknown
+                                    {% endif %}
+                                </dd>
+                            </div>
+
+                            <div>
+                                <dt>Status</dt>
+                                <dd>{{ report.get_status_display }}</dd>
+                            </div>
+
+                            {% if report.what3words %}
+                                <div>
+                                    <dt>What3words</dt>
+                                    <dd>{{ report.what3words }}</dd>
+                                </div>
+                            {% endif %}
+                        </dl>
+                    </div>
+                </article>
+
+                <aside class="report-detail-sidebar">
+                    <div class="location-card">
+                        <p class="section-eyebrow">Location</p>
+
+                        <h2>{{ report.location_name }}</h2>
+
+                        <div class="detail-map-placeholder">
+                            <p>Interactive map</p>
+                            <span>
+                                Google Maps will display this report here.
+                            </span>
+                        </div>
+
+                        <div class="coordinate-list">
+                            <p>
+                                <strong>Latitude</strong>
+                                {{ report.latitude }}
+                            </p>
+
+                            <p>
+                                <strong>Longitude</strong>
+                                {{ report.longitude }}
+                            </p>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+
+            <section class="progress-section">
+                <div class="progress-heading">
+                    <div>
+                        <p class="section-eyebrow">Monitoring</p>
+                        <h2>Progress Updates</h2>
+                    </div>
+
+                    <p>
+                        Follow the history of work carried out on this tree.
+                    </p>
+                </div>
+
+                <div class="progress-list">
+                    {% for update in report.progress_updates.all %}
+                        <article class="progress-card">
+                            <div class="progress-date">
+                                {{ update.created_at|date:"j M Y" }}
+                            </div>
+
+                            <div>
+                                {% if update.status %}
+                                    <span class="progress-status">
+                                        {{ update.get_status_display }}
+                                    </span>
+                                {% endif %}
+
+                                <p>{{ update.description }}</p>
+                            </div>
+                        </article>
+                    {% empty %}
+                        <div class="progress-empty">
+                            <h3>No progress updates yet</h3>
+                            <p>
+                                Updates will appear here as work on this
+                                tree is recorded.
+                            </p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+    </section>
+</main>
+{% endblock %}

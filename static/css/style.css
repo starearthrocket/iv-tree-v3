@@ -810,3 +810,390 @@ a {
         height: 72px;
     }
 }
+
+/* ----------------------------------------
+   Tree report list
+---------------------------------------- */
+
+.report-list-section,
+.report-detail-section {
+    padding: 5rem 0 6rem;
+    background-color: var(--cream);
+}
+
+.page-heading {
+    max-width: 700px;
+    margin-bottom: 3rem;
+}
+
+.page-heading h1,
+.report-detail-header h1 {
+    margin: 0 0 1rem;
+    color: var(--forest-deep);
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+    font-size: clamp(2.6rem, 5vw, 4rem);
+    line-height: 1.1;
+}
+
+.page-heading > p:not(.section-eyebrow) {
+    margin: 0 0 1.5rem;
+    color: #555b55;
+    line-height: 1.8;
+}
+
+.tree-report-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.tree-report-card {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--white);
+    border: 1px solid rgba(15, 61, 46, 0.1);
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(15, 61, 46, 0.06);
+}
+
+.tree-report-card-top {
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.report-card-marker {
+    width: 44px;
+}
+
+.report-status,
+.detail-status,
+.progress-status {
+    padding: 0.35rem 0.7rem;
+    display: inline-block;
+    background-color: #e2f1df;
+    color: var(--forest-green);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.tree-report-card h2 {
+    margin: 0 0 0.4rem;
+    color: var(--forest-deep);
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+    font-size: 1.65rem;
+}
+
+.tree-report-card h2 a:hover,
+.tree-report-card h2 a:focus-visible {
+    color: var(--forest-green);
+}
+
+.report-card-location {
+    margin: 0 0 1rem;
+    color: var(--forest-green);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.report-card-description {
+    margin: 0 0 1.5rem;
+    color: #5a605a;
+    line-height: 1.7;
+}
+
+.report-card-footer {
+    margin-top: auto;
+    padding-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-top: 1px solid rgba(15, 61, 46, 0.1);
+    color: #777d77;
+    font-size: 0.8rem;
+}
+
+.empty-state {
+    max-width: 620px;
+    margin: 2rem auto 0;
+    padding: 3rem;
+    background-color: var(--white);
+    border-radius: 20px;
+    text-align: center;
+}
+
+.empty-state img {
+    width: 180px;
+    margin: 0 auto 1.5rem;
+}
+
+.empty-state h2 {
+    color: var(--forest-deep);
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+}
+
+
+/* ----------------------------------------
+   Tree report detail
+---------------------------------------- */
+
+.back-link {
+    margin-bottom: 2rem;
+    display: inline-block;
+    color: var(--forest-green);
+    font-weight: 600;
+}
+
+.report-detail-header {
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.detail-marker {
+    width: 72px;
+}
+
+.report-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.8rem 1.25rem;
+    color: #626862;
+    font-size: 0.9rem;
+}
+
+.report-detail-grid {
+    display: grid;
+    grid-template-columns: 1.35fr 0.65fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.report-detail-main,
+.location-card {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.report-detail-photo,
+.report-photo-placeholder,
+.report-information-card,
+.location-card {
+    background-color: var(--white);
+    border: 1px solid rgba(15, 61, 46, 0.1);
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(15, 61, 46, 0.05);
+}
+
+.report-detail-photo {
+    width: 100%;
+    max-height: 520px;
+    object-fit: cover;
+}
+
+.report-photo-placeholder {
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #eef2e8;
+    color: #747b74;
+}
+
+.report-information-card,
+.location-card {
+    padding: 2rem;
+}
+
+.report-information-card h2,
+.location-card h2,
+.progress-heading h2 {
+    margin: 0 0 1rem;
+    color: var(--forest-deep);
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+    font-size: 2rem;
+}
+
+.report-information-card > p {
+    color: #555b55;
+    line-height: 1.8;
+}
+
+.report-facts {
+    margin: 2rem 0 0;
+    display: grid;
+    gap: 1rem;
+}
+
+.report-facts div {
+    padding-top: 1rem;
+    border-top: 1px solid rgba(15, 61, 46, 0.1);
+}
+
+.report-facts dt {
+    color: #777d77;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.report-facts dd {
+    margin: 0.3rem 0 0;
+    color: var(--forest-deep);
+    font-weight: 500;
+}
+
+.detail-map-placeholder {
+    min-height: 240px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #e9e3c9;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.detail-map-placeholder p {
+    margin: 0 0 0.4rem;
+    color: var(--forest-deep);
+    font-weight: 600;
+}
+
+.detail-map-placeholder span {
+    max-width: 260px;
+    color: #606760;
+    font-size: 0.85rem;
+}
+
+.coordinate-list {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.coordinate-list p {
+    margin: 0;
+    color: #555b55;
+}
+
+.coordinate-list strong {
+    margin-right: 0.4rem;
+    color: var(--forest-deep);
+}
+
+
+/* ----------------------------------------
+   Progress history
+---------------------------------------- */
+
+.progress-section {
+    margin-top: 4rem;
+}
+
+.progress-heading {
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.progress-heading h2 {
+    margin-bottom: 0;
+}
+
+.progress-heading > p {
+    max-width: 420px;
+    margin: 0;
+    color: #666c66;
+    line-height: 1.6;
+}
+
+.progress-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.progress-card,
+.progress-empty {
+    padding: 1.75rem 2rem;
+    background-color: var(--white);
+    border: 1px solid rgba(15, 61, 46, 0.1);
+    border-radius: 16px;
+}
+
+.progress-card {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 2rem;
+}
+
+.progress-date {
+    color: var(--forest-green);
+    font-weight: 600;
+}
+
+.progress-card p {
+    margin: 0.75rem 0 0;
+    color: #555b55;
+    line-height: 1.7;
+}
+
+.progress-empty h3 {
+    margin: 0 0 0.5rem;
+    color: var(--forest-deep);
+}
+
+.progress-empty p {
+    margin: 0;
+    color: #666c66;
+}
+
+
+/* ----------------------------------------
+   Report pages responsive
+---------------------------------------- */
+
+@media (max-width: 900px) {
+    .tree-report-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .report-detail-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 650px) {
+    .tree-report-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .report-detail-header,
+    .progress-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .detail-marker {
+        width: 58px;
+    }
+
+    .progress-card {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .report-list-section,
+    .report-detail-section {
+        padding: 3.5rem 0 4rem;
+    }
+}
