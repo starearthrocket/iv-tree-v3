@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Post | I-V Tree{% endblock %}
+
+{% block content %}
+<main>
+    <section class="delete-section">
+        <div class="section-container">
+            <div class="delete-card">
+                <p class="section-eyebrow">Community</p>
+
+                <h1>Delete this post?</h1>
+
+                <p>
+                    You are about to permanently delete
+                    <strong>{{ post.title }}</strong>.
+                    This cannot be undone.
+                </p>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="delete-actions">
+                        <button
+                            type="submit"
+                            class="button button-danger"
+                        >
+                            Delete Post
+                        </button>
+
+                        <a
+                            href="{% url 'community:post_detail' post.pk %}"
+                            class="button button-outline-dark"
+                        >
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

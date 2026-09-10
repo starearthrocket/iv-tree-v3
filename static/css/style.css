@@ -1897,3 +1897,24 @@ a {
         max-height: 280px;
     }
 }
+
+.community-post-content h2 a {
+    color: inherit;
+}
+
+.community-post-content h2 a:hover,
+.community-post-content h2 a:focus-visible {
+    color: var(--forest-green);
+}
+
+.community-read-link {
+    display: inline-block;
+    margin-top: 1rem;
+    color: var(--forest-green);
+    font-weight: 600;
+}
+
+.community-read-link:hover,
+.community-read-link:focus-visible {
+    color: var(--leaf-green);
+}

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }} | I-V Tree{% endblock %}
+
+{% block content %}
+<main>
+    <section class="community-section">
+        <div class="section-container">
+            <article class="community-post-detail">
+                <p class="community-post-label">
+                    Community Q&amp;A
+                </p>
+
+                <h1>{{ post.title }}</h1>
+
+                <p class="community-post-meta">
+                    {% if post.author %}
+                        By {{ post.author.username }}
+                    {% else %}
+                        Former member
+                    {% endif %}
+                    · {{ post.created_at|date:"j M Y" }}
+                </p>
+
+                {% if post.image %}
+                    <img
+                        src="{{ post.image.url }}"
+                        alt=""
+                        class="community-detail-image"
+                    >
+                {% endif %}
+
+                <div class="community-detail-content">
+                    {{ post.content|linebreaks }}
+                </div>
+
+                {% if user == post.author %}
+                    <div class="community-owner-actions">
+                        <a
+                            href="{% url 'community:post_edit' post.pk %}"
+                            class="button button-outline-dark"
+                        >
+                            Edit Post
+                        </a>
+
+                        <a
+                            href="{% url 'community:post_delete' post.pk %}"
+                            class="button button-danger"
+                        >
+                            Delete Post
+                        </a>
+                    </div>
+                {% endif %}
+            </article>
+        </div>
+    </section>
+</main>
+{% endblock %}
