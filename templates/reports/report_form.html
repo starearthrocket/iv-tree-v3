@@ -12,9 +12,11 @@
 <main>
     <section class="report-form-section">
         <div class="section-container">
+
             <div class="report-form-heading">
                 {% if report %}
                     <p class="section-eyebrow">Edit report</p>
+
                     <h1>Update your tree report</h1>
 
                     <p>
@@ -22,6 +24,7 @@
                     </p>
                 {% else %}
                     <p class="section-eyebrow">Report a tree</p>
+
                     <h1>Help us record an affected tree</h1>
 
                     <p>
@@ -44,22 +47,151 @@
                     </div>
                 {% endif %}
 
-                {% for field in form %}
-                    <div class="form-group">
-                        {{ field.label_tag }}
-                        {{ field }}
+                <div class="form-group">
+                    {{ form.title.label_tag }}
+                    {{ form.title }}
 
-                        {% if field.help_text %}
-                            <small>{{ field.help_text }}</small>
-                        {% endif %}
+                    {% for error in form.title.errors %}
+                        <p class="field-error">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </div>
 
-                        {% for error in field.errors %}
-                            <p class="field-error">
-                                {{ error }}
+                <div class="form-group">
+                    {{ form.tree_species.label_tag }}
+                    {{ form.tree_species }}
+
+                    {% for error in form.tree_species.errors %}
+                        <p class="field-error">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.description.label_tag }}
+                    {{ form.description }}
+
+                    {% for error in form.description.errors %}
+                        <p class="field-error">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.photo.label_tag }}
+                    {{ form.photo }}
+
+                    {% for error in form.photo.errors %}
+                        <p class="field-error">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.location_name.label_tag }}
+                    {{ form.location_name }}
+
+                    {% for error in form.location_name.errors %}
+                        <p class="field-error">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    <label for="location-picker-map">
+                        Choose the tree location
+                    </label>
+
+                    <p class="form-help-text">
+                        Click the map as accurately as possible to mark
+                        where the tree is located.
+                    </p>
+
+                    {% if google_maps_api_key and google_maps_map_id %}
+                        <div
+                            id="location-picker-map"
+                            class="report-map"
+                            aria-label="Map for selecting the tree location"
+                        ></div>
+
+                        <p
+                            id="map-location-status"
+                            class="form-help-text"
+                            aria-live="polite"
+                        >
+                            Click the map to select a location.
+                        </p>
+                    {% else %}
+                        <div class="form-errors">
+                            <p>
+                                The location map is currently unavailable.
+                                You can still enter the coordinates below.
                             </p>
-                        {% endfor %}
-                    </div>
-                {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.latitude.label_tag }}
+                    {{ form.latitude }}
+
+                    <small>
+                        Automatically updated when you click the map.
+                    </small>
+
+                    {% for error in form.latitude.errors %}
+                        <p class="field-error">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.longitude.label_tag }}
+                    {{ form.longitude }}
+
+                    <small>
+                        Automatically updated when you click the map.
+                    </small>
+
+                    {% for error in form.longitude.errors %}
+                        <p class="field-error">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.what3words.label_tag }}
+                    {{ form.what3words }}
+
+                    <small>
+                        This will be added automatically once the
+                        what3words integration is connected.
+                    </small>
+
+                    {% for error in form.what3words.errors %}
+                        <p class="field-error">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group">
+                    {{ form.visibility.label_tag }}
+                    {{ form.visibility }}
+
+                    {% for error in form.visibility.errors %}
+                        <p class="field-error">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </div>
 
                 <div class="form-actions">
                     <button
@@ -83,7 +215,131 @@
                     {% endif %}
                 </div>
             </form>
+
         </div>
     </section>
 </main>
+
+
+{% if google_maps_api_key and google_maps_map_id %}
+
+<script>
+    async function initLocationPickerMap() {
+        try {
+            const { Map } =
+                await google.maps.importLibrary('maps');
+
+            const { AdvancedMarkerElement } =
+                await google.maps.importLibrary('marker');
+
+            const mapElement =
+                document.getElementById('location-picker-map');
+
+            const latitudeInput =
+                document.getElementById('id_latitude');
+
+            const longitudeInput =
+                document.getElementById('id_longitude');
+
+            const statusElement =
+                document.getElementById('map-location-status');
+
+            const existingLatitude =
+                parseFloat(latitudeInput.value);
+
+            const existingLongitude =
+                parseFloat(longitudeInput.value);
+
+            const hasExistingLocation =
+                !Number.isNaN(existingLatitude) &&
+                !Number.isNaN(existingLongitude);
+
+            const initialPosition = hasExistingLocation
+                ? {
+                    lat: existingLatitude,
+                    lng: existingLongitude
+                }
+                : {
+                    lat: 54.5,
+                    lng: -3.0
+                };
+
+            const map = new Map(
+                mapElement,
+                {
+                    center: initialPosition,
+                    zoom: hasExistingLocation ? 15 : 5,
+                    mapId: '{{ google_maps_map_id }}',
+                    mapTypeControl: false,
+                    streetViewControl: false,
+                    clickableIcons: false
+                }
+            );
+
+            let locationMarker = null;
+
+            function setTreeLocation(position) {
+                latitudeInput.value =
+                    position.lat.toFixed(6);
+
+                longitudeInput.value =
+                    position.lng.toFixed(6);
+
+                if (locationMarker) {
+                    locationMarker.position = position;
+                } else {
+                    locationMarker =
+                        new AdvancedMarkerElement({
+                            map: map,
+                            position: position,
+                            title: 'Selected tree location'
+                        });
+                }
+
+                statusElement.textContent =
+                    'Tree location selected. You can click again to adjust it.';
+            }
+
+            if (hasExistingLocation) {
+                setTreeLocation(initialPosition);
+
+                statusElement.textContent =
+                    'Current tree location shown. Click the map to change it.';
+            }
+
+            map.addListener(
+                'click',
+                (event) => {
+                    const position = {
+                        lat: event.latLng.lat(),
+                        lng: event.latLng.lng()
+                    };
+
+                    setTreeLocation(position);
+                }
+            );
+        } catch (error) {
+            console.error(
+                'I-V Tree location map failed to load:',
+                error
+            );
+
+            const statusElement =
+                document.getElementById('map-location-status');
+
+            if (statusElement) {
+                statusElement.textContent =
+                    'The map could not be loaded. You can enter the coordinates manually.';
+            }
+        }
+    }
+</script>
+
+<script
+    async
+    src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&loading=async&callback=initLocationPickerMap"
+></script>
+
+{% endif %}
+
 {% endblock %}

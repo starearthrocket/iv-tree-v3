@@ -88,6 +88,8 @@ def report_create(request):
         {
             'form': form,
             'report': None,
+            'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
+            'google_maps_map_id': settings.GOOGLE_MAPS_MAP_ID,
         },
     )
 
@@ -130,6 +132,8 @@ def report_edit(request, pk):
         {
             'form': form,
             'report': report,
+            'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
+            'google_maps_map_id': settings.GOOGLE_MAPS_MAP_ID,
         },
     )
 
