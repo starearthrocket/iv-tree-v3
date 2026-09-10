@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Explore Map | I-V Tree{% endblock %}
+
+{% block content %}
+<main>
+    <section class="map-page-section">
+        <div class="section-container">
+            <div class="map-page-heading">
+                <div>
+                    <p class="section-eyebrow">Explore Reports</p>
+                    <h1>Explore the I-V Tree Map</h1>
+
+                    <p>
+                        Discover publicly reported trees and follow
+                        their protection and monitoring progress.
+                    </p>
+                </div>
+
+                {% if user.is_authenticated %}
+                    <a
+                        href="{% url 'reports:report_create' %}"
+                        class="button button-primary"
+                    >
+                        Report a Tree
+                    </a>
+                {% endif %}
+            </div>
+
+            <div class="map-page-layout">
+                <div class="map-panel">
+                    <div
+                        id="report-map"
+                        class="report-map-placeholder"
+                        aria-label="Map showing public tree reports"
+                    >
+                        <div class="map-placeholder-content">
+                            <p class="section-eyebrow">
+                                Interactive map
+                            </p>
+
+                            <h2>Google Maps coming next</h2>
+
+                            <p>
+                                Public tree reports will appear here
+                                as interactive map markers.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <aside class="map-report-panel">
+                    <div class="map-report-heading">
+                        <h2>Public Reports</h2>
+
+                        <span>
+                            {{ reports|length }}
+                            tree{{ reports|length|pluralize }}
+                        </span>
+                    </div>
+
+                    {% if reports %}
+                        <div class="map-report-list">
+                            {% for report in reports %}
+                                <article
+                                    class="map-report-card"
+                                    data-latitude="{{ report.latitude }}"
+                                    data-longitude="{{ report.longitude }}"
+                                    data-status="{{ report.status }}"
+                                >
+                                    <div class="map-report-marker">
+                                        {% if report.status == 'IN_PROGRESS' %}
+                                            <img
+                                                src="{% static 'map-markers/marker-progress.png' %}"
+                                                alt=""
+                                            >
+                                        {% elif report.status == 'PROTECTED' %}
+                                            <img
+                                                src="{% static 'map-markers/marker-protected.png' %}"
+                                                alt=""
+                                            >
+                                        {% elif report.status == 'RESOLVED' %}
+                                            <img
+                                                src="{% static 'map-markers/marker-resolved.png' %}"
+                                                alt=""
+                                            >
+                                        {% elif report.status == 'NEEDS_ATTENTION' %}
+                                            <img
+                                                src="{% static 'map-markers/marker-attention.png' %}"
+                                                alt=""
+                                            >
+                                        {% else %}
+                                            <img
+                                                src="{% static 'map-markers/marker-active.png' %}"
+                                                alt=""
+                                            >
+                                        {% endif %}
+                                    </div>
+
+                                    <div>
+                                        <span class="dashboard-status">
+                                            {{ report.get_status_display }}
+                                        </span>
+
+                                        <h3>
+                                            <a
+                                                href="{% url 'reports:report_detail' report.pk %}"
+                                            >
+                                                {{ report.title }}
+                                            </a>
+                                        </h3>
+
+                                        <p>
+                                            {{ report.location_name }}
+                                        </p>
+
+                                        <a
+                                            href="{% url 'reports:report_detail' report.pk %}"
+                                            class="community-read-link"
+                                        >
+                                            View report
+                                        </a>
+                                    </div>
+                                </article>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="community-empty">
+                            <h2>No public reports yet</h2>
+
+                            <p>
+                                Public tree reports will appear here
+                                when members begin adding them.
+                            </p>
+
+                            {% if user.is_authenticated %}
+                                <a
+                                    href="{% url 'reports:report_create' %}"
+                                    class="button button-primary"
+                                >
+                                    Report the First Tree
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </aside>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

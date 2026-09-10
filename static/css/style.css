@@ -2084,3 +2084,196 @@ a {
         gap: 0.75rem;
     }
 }
+
+/* ----------------------------------------
+   Explore map
+---------------------------------------- */
+
+.map-page-section {
+    padding: 4.5rem 0 6rem;
+    background-color: var(--cream);
+}
+
+.map-page-heading {
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.map-page-heading > div {
+    max-width: 720px;
+}
+
+.map-page-heading h1 {
+    margin: 0 0 1rem;
+    color: var(--forest-deep);
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+    font-size: clamp(2.6rem, 5vw, 4rem);
+    line-height: 1.1;
+}
+
+.map-page-heading > div > p:not(.section-eyebrow) {
+    margin: 0;
+    color: #555b55;
+    line-height: 1.8;
+}
+
+.map-page-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(320px, 0.8fr);
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.map-panel,
+.map-report-panel {
+    background-color: var(--white);
+    border: 1px solid rgba(15, 61, 46, 0.1);
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(15, 61, 46, 0.05);
+}
+
+.map-panel {
+    padding: 1rem;
+}
+
+.report-map-placeholder {
+    min-height: 560px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        linear-gradient(
+            rgba(247, 245, 236, 0.9),
+            rgba(247, 245, 236, 0.9)
+        );
+    border: 1px dashed rgba(15, 61, 46, 0.25);
+    border-radius: 14px;
+    text-align: center;
+}
+
+.map-placeholder-content {
+    max-width: 430px;
+    padding: 2rem;
+}
+
+.map-placeholder-content h2 {
+    margin: 0 0 0.75rem;
+    color: var(--forest-deep);
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+    font-size: 2rem;
+}
+
+.map-placeholder-content > p:last-child {
+    margin: 0;
+    color: #666c66;
+    line-height: 1.7;
+}
+
+.map-report-panel {
+    padding: 1.5rem;
+}
+
+.map-report-heading {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.map-report-heading h2 {
+    margin: 0;
+    color: var(--forest-deep);
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+    font-size: 1.7rem;
+}
+
+.map-report-heading span {
+    color: #777d77;
+    font-size: 0.85rem;
+}
+
+.map-report-list {
+    display: grid;
+}
+
+.map-report-card {
+    padding: 1.25rem 0;
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    gap: 1rem;
+    border-top: 1px solid rgba(15, 61, 46, 0.1);
+}
+
+.map-report-card:first-child {
+    border-top: 0;
+}
+
+.map-report-marker img {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+}
+
+.map-report-card h3 {
+    margin: 0.6rem 0 0.3rem;
+    font-size: 1rem;
+}
+
+.map-report-card h3 a {
+    color: var(--forest-deep);
+}
+
+.map-report-card h3 a:hover,
+.map-report-card h3 a:focus-visible {
+    color: var(--forest-green);
+}
+
+.map-report-card p {
+    margin: 0;
+    color: #666c66;
+    font-size: 0.85rem;
+}
+
+@media (max-width: 900px) {
+    .map-page-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .report-map-placeholder {
+        min-height: 430px;
+    }
+}
+
+@media (max-width: 700px) {
+    .map-page-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .report-map-placeholder {
+        min-height: 340px;
+    }
+}
+
+/* Keep Explore Map placeholder content centred */
+.report-map-placeholder .map-placeholder-content {
+    display: block;
+    width: 100%;
+    max-width: 430px;
+    padding: 2rem;
+    text-align: center;
+}
+
+.report-map-placeholder .map-placeholder-content h2 {
+    width: auto;
+    margin: 0 0 0.75rem;
+    white-space: normal;
+}
+
+.report-map-placeholder .map-placeholder-content p {
+    width: auto;
+}

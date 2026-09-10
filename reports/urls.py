@@ -6,6 +6,7 @@ app_name = 'reports'
 
 urlpatterns = [
     path('', views.report_list, name='report_list'),
+    path('map/', views.report_map, name='report_map'),
     path('report/', views.report_create, name='report_create'),
     path(
         '<int:pk>/progress/add/',
@@ -22,7 +23,19 @@ urlpatterns = [
         views.progress_delete,
         name='progress_delete',
     ),
-    path('<int:pk>/edit/', views.report_edit, name='report_edit'),
-    path('<int:pk>/delete/', views.report_delete, name='report_delete'),
-    path('<int:pk>/', views.report_detail, name='report_detail'),
+    path(
+        '<int:pk>/edit/',
+        views.report_edit,
+        name='report_edit',
+    ),
+    path(
+        '<int:pk>/delete/',
+        views.report_delete,
+        name='report_delete',
+    ),
+    path(
+        '<int:pk>/',
+        views.report_detail,
+        name='report_detail',
+    ),
 ]

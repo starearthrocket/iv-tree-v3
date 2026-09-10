@@ -21,6 +21,22 @@ def report_list(request):
     )
 
 
+def report_map(request):
+    """Display public tree reports on the Explore Map page."""
+
+    reports = TreeReport.objects.filter(
+        visibility=TreeReport.Visibility.PUBLIC
+    ).select_related('owner')
+
+    return render(
+        request,
+        'reports/report_map.html',
+        {
+            'reports': reports,
+        },
+    )
+
+
 def report_detail(request, pk):
     """Display a public report or a private report to its owner."""
 
