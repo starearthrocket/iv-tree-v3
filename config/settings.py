@@ -143,3 +143,8 @@ MAILERS = {
 
 LOGIN_REDIRECT_URL = 'core:home'
 LOGOUT_REDIRECT_URL = 'core:home'
+
+
+# Development email configuration.
+# Production email credentials will use environment variables.
+DEFAULT_FROM_EMAIL = 'I-V Tree <noreply@iv-tree.co.uk>'

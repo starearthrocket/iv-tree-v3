@@ -1749,3 +1749,21 @@ a {
         gap: 0.75rem;
     }
 }
+
+/* ----------------------------------------
+   Authentication helper links
+---------------------------------------- */
+
+.auth-links {
+    margin: 0 0 1.5rem;
+}
+
+.auth-links a {
+    color: var(--forest-green);
+    font-weight: 600;
+}
+
+.auth-links a:hover,
+.auth-links a:focus-visible {
+    color: var(--leaf-green);
+}
