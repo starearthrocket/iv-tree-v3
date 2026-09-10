@@ -7,9 +7,11 @@
 <main>
     <section class="map-page-section">
         <div class="section-container">
+
             <div class="map-page-heading">
                 <div>
                     <p class="section-eyebrow">Explore Reports</p>
+
                     <h1>Explore the I-V Tree Map</h1>
 
                     <p>
@@ -29,25 +31,33 @@
             </div>
 
             <div class="map-page-layout">
+
                 <div class="map-panel">
-                    <div
-                        id="report-map"
-                        class="report-map-placeholder"
-                        aria-label="Map showing public tree reports"
-                    >
-                        <div class="map-placeholder-content">
-                            <p class="section-eyebrow">
-                                Interactive map
-                            </p>
+                    {% if google_maps_api_key and google_maps_map_id %}
+                        <div
+                            id="report-map"
+                            class="report-map"
+                            aria-label="Map showing public tree reports"
+                        ></div>
+                    {% else %}
+                        <div class="report-map-placeholder">
+                            <div class="map-placeholder-content">
+                                <p class="section-eyebrow">
+                                    Map unavailable
+                                </p>
 
-                            <h2>Google Maps coming next</h2>
+                                <h2>
+                                    Google Maps could not be loaded
+                                </h2>
 
-                            <p>
-                                Public tree reports will appear here
-                                as interactive map markers.
-                            </p>
+                                <p>
+                                    Please try again later. Public reports
+                                    are still available in the list beside
+                                    the map.
+                                </p>
+                            </div>
                         </div>
-                    </div>
+                    {% endif %}
                 </div>
 
                 <aside class="map-report-panel">
@@ -62,40 +72,50 @@
 
                     {% if reports %}
                         <div class="map-report-list">
+
                             {% for report in reports %}
                                 <article
                                     class="map-report-card"
                                     data-latitude="{{ report.latitude }}"
                                     data-longitude="{{ report.longitude }}"
-                                    data-status="{{ report.status }}"
+                                    data-title="{{ report.title }}"
+                                    data-location="{{ report.location_name }}"
+                                    data-url="{% url 'reports:report_detail' report.pk %}"
                                 >
+
                                     <div class="map-report-marker">
+
                                         {% if report.status == 'IN_PROGRESS' %}
                                             <img
                                                 src="{% static 'map-markers/marker-progress.png' %}"
                                                 alt=""
                                             >
+
                                         {% elif report.status == 'PROTECTED' %}
                                             <img
                                                 src="{% static 'map-markers/marker-protected.png' %}"
                                                 alt=""
                                             >
+
                                         {% elif report.status == 'RESOLVED' %}
                                             <img
                                                 src="{% static 'map-markers/marker-resolved.png' %}"
                                                 alt=""
                                             >
+
                                         {% elif report.status == 'NEEDS_ATTENTION' %}
                                             <img
                                                 src="{% static 'map-markers/marker-attention.png' %}"
                                                 alt=""
                                             >
+
                                         {% else %}
                                             <img
                                                 src="{% static 'map-markers/marker-active.png' %}"
                                                 alt=""
                                             >
                                         {% endif %}
+
                                     </div>
 
                                     <div>
@@ -122,9 +142,12 @@
                                             View report
                                         </a>
                                     </div>
+
                                 </article>
                             {% endfor %}
+
                         </div>
+
                     {% else %}
                         <div class="community-empty">
                             <h2>No public reports yet</h2>
@@ -133,20 +156,131 @@
                                 Public tree reports will appear here
                                 when members begin adding them.
                             </p>
-
-                            {% if user.is_authenticated %}
-                                <a
-                                    href="{% url 'reports:report_create' %}"
-                                    class="button button-primary"
-                                >
-                                    Report the First Tree
-                                </a>
-                            {% endif %}
                         </div>
                     {% endif %}
+
                 </aside>
+
             </div>
         </div>
     </section>
 </main>
+
+
+{% if google_maps_api_key and google_maps_map_id %}
+
+<script>
+    async function initReportMap() {
+        const { Map } =
+            await google.maps.importLibrary('maps');
+
+        const { AdvancedMarkerElement } =
+            await google.maps.importLibrary('marker');
+
+        const mapElement =
+            document.getElementById('report-map');
+
+        const map = new Map(
+            mapElement,
+            {
+                center: {
+                    lat: 54.5,
+                    lng: -3.0
+                },
+                zoom: 5,
+                mapId: '{{ google_maps_map_id }}',
+                mapTypeControl: false,
+                streetViewControl: false
+            }
+        );
+
+        const bounds =
+            new google.maps.LatLngBounds();
+
+        const cards =
+            document.querySelectorAll('.map-report-card');
+
+        let validMarkerCount = 0;
+
+        cards.forEach((card) => {
+            const latitude =
+                parseFloat(card.dataset.latitude);
+
+            const longitude =
+                parseFloat(card.dataset.longitude);
+
+            if (
+                Number.isNaN(latitude) ||
+                Number.isNaN(longitude)
+            ) {
+                return;
+            }
+
+            const position = {
+                lat: latitude,
+                lng: longitude
+            };
+
+            const marker =
+                new AdvancedMarkerElement({
+                    map: map,
+                    position: position,
+                    title: card.dataset.title,
+                    gmpClickable: true
+                });
+
+            const infoWindow =
+                new google.maps.InfoWindow({
+                    content: `
+                        <div class="map-info-window">
+                            <strong>
+                                ${card.dataset.title}
+                            </strong>
+
+                            <br>
+
+                            <span>
+                                ${card.dataset.location}
+                            </span>
+
+                            <br>
+
+                            <a href="${card.dataset.url}">
+                                View report
+                            </a>
+                        </div>
+                    `
+                });
+
+            marker.addEventListener(
+                'gmp-click',
+                () => {
+                    infoWindow.open({
+                        anchor: marker,
+                        map: map
+                    });
+                }
+            );
+
+            bounds.extend(position);
+
+            validMarkerCount += 1;
+        });
+
+        if (validMarkerCount === 1) {
+            map.setCenter(bounds.getCenter());
+            map.setZoom(13);
+        } else if (validMarkerCount > 1) {
+            map.fitBounds(bounds);
+        }
+    }
+</script>
+
+<script
+    async
+    src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&loading=async&callback=initReportMap"
+></script>
+
+{% endif %}
+
 {% endblock %}

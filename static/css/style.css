@@ -2277,3 +2277,21 @@ a {
 .report-map-placeholder .map-placeholder-content p {
     width: auto;
 }
+
+.report-map {
+    width: 100%;
+    min-height: 560px;
+    border-radius: 14px;
+}
+
+@media (max-width: 900px) {
+    .report-map {
+        min-height: 430px;
+    }
+}
+
+@media (max-width: 700px) {
+    .report-map {
+        min-height: 340px;
+    }
+}

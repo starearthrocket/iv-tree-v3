@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
@@ -33,6 +34,8 @@ def report_map(request):
         'reports/report_map.html',
         {
             'reports': reports,
+            'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
+            'google_maps_map_id': settings.GOOGLE_MAPS_MAP_ID,
         },
     )
 
