@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ profile_user.username }} | I-V Tree{% endblock %}
+
+{% block content %}
+<main>
+    <section class="public-profile-section">
+        <div class="section-container">
+
+            <div class="public-profile-header">
+                <img
+                    src="{% static 'avatars/' %}{{ profile.avatar_choice }}"
+                    alt="{{ profile_user.username }}'s woodland avatar"
+                    class="public-profile-avatar"
+                >
+
+                <div class="public-profile-intro">
+                    <p class="section-eyebrow">
+                        I-V Tree Community Member
+                    </p>
+
+                    <h1>{{ profile_user.username }}</h1>
+
+                    {% if profile.bio %}
+                        <p>{{ profile.bio }}</p>
+                    {% else %}
+                        <p>
+                            This member has not added a bio yet.
+                        </p>
+                    {% endif %}
+
+                    {% if user == profile_user %}
+                        <a
+                            href="{% url 'accounts:profile' %}"
+                            class="button button-outline-dark"
+                        >
+                            Edit My Profile
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="public-profile-stats">
+                <div class="public-profile-stat">
+                    <strong>{{ report_count }}</strong>
+                    <span>Public Tree Reports</span>
+                </div>
+
+                <div class="public-profile-stat">
+                    <strong>{{ post_count }}</strong>
+                    <span>Community Posts</span>
+                </div>
+            </div>
+
+            <section class="public-profile-content">
+                <div class="public-profile-panel">
+                    <div class="public-profile-panel-heading">
+                        <h2>Reported Trees</h2>
+                    </div>
+
+                    {% if public_reports %}
+                        <div class="public-profile-list">
+                            {% for report in public_reports %}
+                                <article class="public-profile-item">
+                                    <div>
+                                        <span class="dashboard-status">
+                                            {{ report.get_status_display }}
+                                        </span>
+
+                                        <h3>
+                                            <a
+                                                href="{% url 'reports:report_detail' report.pk %}"
+                                            >
+                                                {{ report.title }}
+                                            </a>
+                                        </h3>
+
+                                        <p>
+                                            {{ report.location_name }}
+                                            ·
+                                            {{ report.created_at|date:"j M Y" }}
+                                        </p>
+                                    </div>
+
+                                    <a
+                                        href="{% url 'reports:report_detail' report.pk %}"
+                                        class="community-read-link"
+                                    >
+                                        View tree
+                                    </a>
+                                </article>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="dashboard-empty">
+                            <p>
+                                No public tree reports yet.
+                            </p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="public-profile-panel">
+                    <div class="public-profile-panel-heading">
+                        <h2>Community Posts</h2>
+                    </div>
+
+                    {% if published_posts %}
+                        <div class="public-profile-list">
+                            {% for post in published_posts %}
+                                <article class="public-profile-item">
+                                    <div>
+                                        <p class="community-post-label">
+                                            Community Q&amp;A
+                                        </p>
+
+                                        <h3>
+                                            <a
+                                                href="{% url 'community:post_detail' post.pk %}"
+                                            >
+                                                {{ post.title }}
+                                            </a>
+                                        </h3>
+
+                                        <p>
+                                            {{ post.created_at|date:"j M Y" }}
+                                        </p>
+                                    </div>
+
+                                    <a
+                                        href="{% url 'community:post_detail' post.pk %}"
+                                        class="community-read-link"
+                                    >
+                                        Read post
+                                    </a>
+                                </article>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="dashboard-empty">
+                            <p>
+                                No published community posts yet.
+                            </p>
+                        </div>
+                    {% endif %}
+                </div>
+            </section>
+
+        </div>
+    </section>
+</main>
+{% endblock %}

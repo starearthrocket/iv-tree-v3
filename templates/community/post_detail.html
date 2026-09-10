@@ -15,7 +15,13 @@
 
                 <p class="community-post-meta">
                     {% if post.author %}
-                        By {{ post.author.username }}
+                        By
+                        <a
+                            href="{% url 'accounts:public_profile' post.author.username %}"
+                            class="community-author-link"
+                        >
+                            {{ post.author.username }}
+                        </a>
                     {% else %}
                         Former member
                     {% endif %}

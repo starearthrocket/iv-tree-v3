@@ -34,6 +34,11 @@ urlpatterns = [
         name='dashboard',
     ),
     path(
+        'members/<str:username>/',
+        views.public_profile,
+        name='public_profile',
+    ),
+    path(
         'password-reset/',
         auth_views.PasswordResetView.as_view(
             template_name='accounts/password_reset.html',

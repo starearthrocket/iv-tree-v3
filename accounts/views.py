@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
+from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404, redirect, render
 
 from community.models import CommunityPost
 from reports.models import ProgressUpdate, TreeReport
@@ -109,5 +110,43 @@ def dashboard(request):
     return render(
         request,
         'accounts/dashboard.html',
+        context,
+    )
+
+
+def public_profile(request, username):
+    """Show a user's public I-V Tree activity."""
+
+    profile_user = get_object_or_404(
+        User,
+        username=username,
+    )
+
+    user_profile, created = Profile.objects.get_or_create(
+        user=profile_user,
+    )
+
+    public_reports = TreeReport.objects.filter(
+        owner=profile_user,
+        visibility=TreeReport.Visibility.PUBLIC,
+    )
+
+    published_posts = CommunityPost.objects.filter(
+        author=profile_user,
+        is_published=True,
+    )
+
+    context = {
+        'profile_user': profile_user,
+        'profile': user_profile,
+        'public_reports': public_reports,
+        'published_posts': published_posts,
+        'report_count': public_reports.count(),
+        'post_count': published_posts.count(),
+    }
+
+    return render(
+        request,
+        'accounts/public_profile.html',
         context,
     )
