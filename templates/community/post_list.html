@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}Community | I-V Tree{% endblock %}
+
+{% block content %}
+<main>
+    <section class="community-section">
+        <div class="section-container">
+            <div class="community-heading">
+                <div>
+                    <p class="section-eyebrow">I-V Tree Community</p>
+                    <h1>Community</h1>
+
+                    <p>
+                        Ask questions, share conservation knowledge and
+                        learn how others are helping to protect trees.
+                    </p>
+                </div>
+
+                {% if user.is_authenticated %}
+                    <a
+                        href="{% url 'community:post_create' %}"
+                        class="button button-primary"
+                    >
+                        Create a Post
+                    </a>
+                {% endif %}
+            </div>
+
+            {% if posts %}
+                <div class="community-post-list">
+                    {% for post in posts %}
+                        <article class="community-post-card">
+                            {% if post.image %}
+                                <a
+                                    href="{% url 'community:post_detail' post.pk %}"
+                                    class="community-post-image"
+                                    aria-label="Read {{ post.title }}"
+                                >
+                                    <img
+                                        src="{{ post.image.url }}"
+                                        alt=""
+                                    >
+                                </a>
+                            {% endif %}
+
+                            <div class="community-post-content">
+                                <p class="community-post-label">
+                                    Community Q&amp;A
+                                </p>
+
+                                <h2>
+                                    <a
+                                        href="{% url 'community:post_detail' post.pk %}"
+                                    >
+                                        {{ post.title }}
+                                    </a>
+                                </h2>
+
+                                <p class="community-post-preview">
+                                    {{ post.content|truncatewords:40 }}
+                                </p>
+
+                                <p class="community-post-meta">
+                                    {% if post.author %}
+                                        By
+                                        <a
+                                            href="{% url 'accounts:public_profile' post.author.username %}"
+                                            class="community-author-link"
+                                        >
+                                            {{ post.author.username }}
+                                        </a>
+                                    {% else %}
+                                        Former member
+                                    {% endif %}
+                                    · {{ post.created_at|date:"j M Y" }}
+                                </p>
+
+                                <a
+                                    href="{% url 'community:post_detail' post.pk %}"
+                                    class="community-read-link"
+                                >
+                                    Read post
+                                </a>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="community-empty">
+                    <h2>No community posts yet</h2>
+
+                    <p>
+                        Be the first to ask a question or share
+                        useful tree-care knowledge.
+                    </p>
+
+                    {% if user.is_authenticated %}
+                        <a
+                            href="{% url 'community:post_create' %}"
+                            class="button button-primary"
+                        >
+                            Create the First Post
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </section>
+</main>
+{% endblock %}
