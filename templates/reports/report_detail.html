@@ -30,6 +30,20 @@
                         <span>
                             Reported {{ report.created_at|date:"j F Y" }}
                         </span>
+
+                        <span>
+                            {% if report.owner %}
+                                Reported by
+                                <a
+                                    href="{% url 'accounts:public_profile' report.owner.username %}"
+                                    class="community-author-link"
+                                >
+                                    {{ report.owner.username }}
+                                </a>
+                            {% else %}
+                                Reported by former member
+                            {% endif %}
+                        </span>
                     </div>
                 </div>
 
