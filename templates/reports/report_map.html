@@ -10,9 +10,13 @@
 
             <div class="map-page-heading">
                 <div>
-                    <p class="section-eyebrow">Explore Reports</p>
+                    <p class="section-eyebrow">
+                        Explore Reports
+                    </p>
 
-                    <h1>Explore the I-V Tree Map</h1>
+                    <h1>
+                        Explore the I-V Tree Map
+                    </h1>
 
                     <p>
                         Discover publicly reported trees and follow
@@ -30,18 +34,24 @@
                 {% endif %}
             </div>
 
+
             <div class="map-page-layout">
 
                 <div class="map-panel">
+
                     {% if google_maps_api_key and google_maps_map_id %}
+
                         <div
                             id="report-map"
                             class="report-map"
                             aria-label="Map showing public tree reports"
                         ></div>
+
                     {% else %}
+
                         <div class="report-map-placeholder">
                             <div class="map-placeholder-content">
+
                                 <p class="section-eyebrow">
                                     Map unavailable
                                 </p>
@@ -55,113 +65,203 @@
                                     are still available in the list beside
                                     the map.
                                 </p>
+
                             </div>
                         </div>
+
                     {% endif %}
+
                 </div>
 
+
                 <aside class="map-report-panel">
+
                     <div class="map-report-heading">
-                        <h2>Public Reports</h2>
+
+                        <h2>
+                            Public Reports
+                        </h2>
 
                         <span>
                             {{ reports|length }}
                             tree{{ reports|length|pluralize }}
                         </span>
+
                     </div>
 
+
                     {% if reports %}
+
                         <div class="map-report-list">
 
                             {% for report in reports %}
+
                                 <article
                                     class="map-report-card"
+                                    data-report-id="{{ report.pk }}"
                                     data-latitude="{{ report.latitude }}"
                                     data-longitude="{{ report.longitude }}"
                                     data-title="{{ report.title }}"
-                                    data-location="{{ report.location_name }}"
+                                    data-status="{{ report.status }}"
+                                    data-town-city="{{ report.town_city }}"
+                                    data-region="{{ report.region }}"
+                                    data-country="{% if report.country %}{{ report.country.name }}{% endif %}"
+                                    data-legacy-location="{{ report.location_name }}"
                                     data-url="{% url 'reports:report_detail' report.pk %}"
                                 >
 
                                     <div class="map-report-marker">
 
                                         {% if report.status == 'IN_PROGRESS' %}
+
                                             <img
                                                 src="{% static 'map-markers/marker-progress.png' %}"
                                                 alt=""
                                             >
 
                                         {% elif report.status == 'PROTECTED' %}
+
                                             <img
                                                 src="{% static 'map-markers/marker-protected.png' %}"
                                                 alt=""
                                             >
 
                                         {% elif report.status == 'RESOLVED' %}
+
                                             <img
                                                 src="{% static 'map-markers/marker-resolved.png' %}"
                                                 alt=""
                                             >
 
                                         {% elif report.status == 'NEEDS_ATTENTION' %}
+
                                             <img
                                                 src="{% static 'map-markers/marker-attention.png' %}"
                                                 alt=""
                                             >
 
                                         {% else %}
+
                                             <img
                                                 src="{% static 'map-markers/marker-active.png' %}"
                                                 alt=""
                                             >
+
                                         {% endif %}
 
                                     </div>
 
-                                    <div>
+
+                                    <div class="map-report-card-content">
+
                                         <span class="dashboard-status">
                                             {{ report.get_status_display }}
                                         </span>
 
                                         <h3>
-                                            <a
-                                                href="{% url 'reports:report_detail' report.pk %}"
-                                            >
-                                                {{ report.title }}
-                                            </a>
+                                            {{ report.title }}
                                         </h3>
 
+
                                         <p>
-                                            {{ report.location_name }}
+
+                                            {% if report.town_city or report.region or report.country %}
+
+                                                {% if report.town_city %}
+                                                    {{ report.town_city }}
+                                                {% endif %}
+
+                                                {% if report.region %}
+
+                                                    {% if report.town_city %}
+                                                        ,
+                                                    {% endif %}
+
+                                                    {{ report.region }}
+
+                                                {% endif %}
+
+                                                {% if report.country %}
+
+                                                    {% if report.town_city or report.region %}
+                                                        ,
+                                                    {% endif %}
+
+                                                    {{ report.country.name }}
+
+                                                {% endif %}
+
+                                            {% elif report.location_name %}
+
+                                                {{ report.location_name }}
+
+                                            {% else %}
+
+                                                Location not specified
+
+                                            {% endif %}
+
                                         </p>
 
-                                        <a
-                                            href="{% url 'reports:report_detail' report.pk %}"
-                                            class="community-read-link"
-                                        >
-                                            View report
-                                        </a>
+
+                                        {% if report.what3words %}
+
+                                            <p class="form-help-text">
+                                                {{ report.what3words }}
+                                            </p>
+
+                                        {% endif %}
+
+
+                                        <div class="map-report-actions">
+
+                                            <a
+                                                href="#report-map"
+                                                class="community-read-link map-show-link"
+                                                data-report-id="{{ report.pk }}"
+                                            >
+                                                Show on map
+                                            </a>
+
+                                            <a
+                                                href="{% url 'reports:report_detail' report.pk %}"
+                                                class="community-read-link"
+                                            >
+                                                View report
+                                            </a>
+
+                                        </div>
+
                                     </div>
 
                                 </article>
+
                             {% endfor %}
 
                         </div>
 
+
                     {% else %}
+
                         <div class="community-empty">
-                            <h2>No public reports yet</h2>
+
+                            <h2>
+                                No public reports yet
+                            </h2>
 
                             <p>
                                 Public tree reports will appear here
                                 when members begin adding them.
                             </p>
+
                         </div>
+
                     {% endif %}
 
                 </aside>
 
             </div>
+
         </div>
     </section>
 </main>
@@ -171,110 +271,1001 @@
 
 <script>
     async function initReportMap() {
-        const { Map } =
-            await google.maps.importLibrary('maps');
+        try {
 
-        const { AdvancedMarkerElement } =
-            await google.maps.importLibrary('marker');
+            const { Map: GoogleMap } =
+                await google.maps.importLibrary(
+                    'maps'
+                );
 
-        const mapElement =
-            document.getElementById('report-map');
+            const { AdvancedMarkerElement } =
+                await google.maps.importLibrary(
+                    'marker'
+                );
 
-        const map = new Map(
-            mapElement,
-            {
-                center: {
-                    lat: 54.5,
-                    lng: -3.0
-                },
-                zoom: 5,
-                mapId: '{{ google_maps_map_id }}',
-                mapTypeControl: false,
-                streetViewControl: false
-            }
-        );
 
-        const bounds =
-            new google.maps.LatLngBounds();
+            const markerUrls = {
 
-        const cards =
-            document.querySelectorAll('.map-report-card');
+                ACTIVE:
+                    "{% static 'map-markers/marker-active.png' %}",
 
-        let validMarkerCount = 0;
+                IN_PROGRESS:
+                    "{% static 'map-markers/marker-progress.png' %}",
 
-        cards.forEach((card) => {
-            const latitude =
-                parseFloat(card.dataset.latitude);
+                PROTECTED:
+                    "{% static 'map-markers/marker-protected.png' %}",
 
-            const longitude =
-                parseFloat(card.dataset.longitude);
+                RESOLVED:
+                    "{% static 'map-markers/marker-resolved.png' %}",
 
-            if (
-                Number.isNaN(latitude) ||
-                Number.isNaN(longitude)
-            ) {
-                return;
-            }
+                NEEDS_ATTENTION:
+                    "{% static 'map-markers/marker-attention.png' %}"
 
-            const position = {
-                lat: latitude,
-                lng: longitude
             };
 
-            const marker =
-                new AdvancedMarkerElement({
-                    map: map,
-                    position: position,
-                    title: card.dataset.title,
-                    gmpClickable: true
+
+            const mapElement =
+                document.getElementById(
+                    'report-map'
+                );
+
+
+            const reportList =
+                document.querySelector(
+                    '.map-report-list'
+                );
+
+
+            const cards =
+                document.querySelectorAll(
+                    '.map-report-card'
+                );
+
+
+            const map =
+                new GoogleMap(
+                    mapElement,
+                    {
+                        center: {
+                            lat: 54.5,
+                            lng: -3.0
+                        },
+
+                        zoom: 5,
+
+                        mapId:
+                            '{{ google_maps_map_id }}',
+
+                        mapTypeControl:
+                            false,
+
+                        streetViewControl:
+                            false,
+
+                        clickableIcons:
+                            false
+                    }
+                );
+
+
+            const bounds =
+                new google.maps.LatLngBounds();
+
+
+            const reportMapItems =
+                new Map();
+
+
+            const mapMarkers =
+                [];
+
+
+            let openInfoWindow =
+                null;
+
+
+            let selectedCard =
+                null;
+
+
+            /*
+             * Build the readable location shown
+             * in the map popup.
+             */
+            function getReportLocation(card) {
+
+                const locationParts = [
+                    card.dataset.townCity,
+                    card.dataset.region,
+                    card.dataset.country
+                ].filter(
+                    (part) => (
+                        part
+                        && part.trim()
+                    )
+                );
+
+
+                if (locationParts.length) {
+
+                    return locationParts.join(
+                        ', '
+                    );
+
+                }
+
+
+                if (
+                    card.dataset.legacyLocation
+                    && card.dataset.legacyLocation.trim()
+                ) {
+
+                    return card.dataset.legacyLocation;
+
+                }
+
+
+                return 'Location not specified';
+            }
+
+
+            /*
+             * Create the normal I-V Tree
+             * status marker.
+             */
+            function createMarkerContent(card) {
+
+                const markerImage =
+                    document.createElement(
+                        'img'
+                    );
+
+
+                markerImage.src =
+                    markerUrls[
+                        card.dataset.status
+                    ]
+                    || markerUrls.ACTIVE;
+
+
+                markerImage.alt =
+                    '';
+
+
+                markerImage.style.width =
+                    '38px';
+
+
+                markerImage.style.height =
+                    '48px';
+
+
+                markerImage.style.objectFit =
+                    'contain';
+
+
+                markerImage.style.display =
+                    'block';
+
+
+                markerImage.style.transition =
+                    'transform 0.2s ease';
+
+
+                markerImage.style.transformOrigin =
+                    'bottom center';
+
+
+                return markerImage;
+            }
+
+
+            /*
+             * Create the popup content safely
+             * using DOM elements rather than
+             * injecting user report text as HTML.
+             */
+            function createInfoWindowContent(card) {
+
+                const container =
+                    document.createElement(
+                        'div'
+                    );
+
+
+                container.className =
+                    'map-info-window';
+
+
+                const title =
+                    document.createElement(
+                        'strong'
+                    );
+
+
+                title.textContent =
+                    card.dataset.title;
+
+
+                const location =
+                    document.createElement(
+                        'p'
+                    );
+
+
+                location.textContent =
+                    getReportLocation(
+                        card
+                    );
+
+
+                const link =
+                    document.createElement(
+                        'a'
+                    );
+
+
+                link.href =
+                    card.dataset.url;
+
+
+                link.textContent =
+                    'View report';
+
+
+                container.appendChild(
+                    title
+                );
+
+
+                container.appendChild(
+                    location
+                );
+
+
+                container.appendChild(
+                    link
+                );
+
+
+                return container;
+            }
+
+
+            /*
+             * Selected report styling.
+             */
+            function clearSelectedCard() {
+
+                if (!selectedCard) {
+                    return;
+                }
+
+
+                selectedCard.classList.remove(
+                    'map-report-card-selected'
+                );
+
+
+                selectedCard =
+                    null;
+            }
+
+
+            function selectCard(card) {
+
+                clearSelectedCard();
+
+
+                card.classList.add(
+                    'map-report-card-selected'
+                );
+
+
+                selectedCard =
+                    card;
+            }
+
+
+            /*
+             * Marker highlighting.
+             */
+            function enlargeMarker(
+                markerContent
+            ) {
+
+                markerContent.style.transform =
+                    'scale(1.3)';
+            }
+
+
+            function resetMarker(
+                markerContent
+            ) {
+
+                markerContent.style.transform =
+                    'scale(1)';
+            }
+
+
+            function resetOtherMarkers(
+                reportId
+            ) {
+
+                reportMapItems.forEach(
+                    (item, itemId) => {
+
+                        if (
+                            itemId
+                            !== reportId
+                        ) {
+
+                            resetMarker(
+                                item.markerContent
+                            );
+
+                        }
+
+                    }
+                );
+            }
+
+
+            /*
+             * Scroll ONLY the Public Reports
+             * box so the selected report appears
+             * at the top.
+             *
+             * The map/page itself does not move.
+             */
+            function scrollReportToTop(card) {
+
+                if (!reportList) {
+                    return;
+                }
+
+
+                if (
+                    !window.matchMedia(
+                        '(min-width: 901px)'
+                    ).matches
+                ) {
+
+                    return;
+
+                }
+
+
+                const listRectangle =
+                    reportList.getBoundingClientRect();
+
+
+                const cardRectangle =
+                    card.getBoundingClientRect();
+
+
+                const targetPosition =
+                    reportList.scrollTop
+                    + cardRectangle.top
+                    - listRectangle.top;
+
+
+                reportList.scrollTo({
+                    top:
+                        targetPosition,
+
+                    behavior:
+                        'smooth'
+                });
+            }
+
+
+            /*
+             * Close any previously open
+             * report popup.
+             */
+            function closePreviousInfoWindow(
+                nextInfoWindow
+            ) {
+
+                if (
+                    openInfoWindow
+                    && openInfoWindow
+                    !== nextInfoWindow
+                ) {
+
+                    openInfoWindow.close();
+
+                }
+
+
+                openInfoWindow =
+                    nextInfoWindow;
+            }
+
+
+            /*
+             * Focus an individual report.
+             *
+             * Zoom level 16 is deliberately above
+             * our clustering max zoom. That means
+             * Show on map always resolves to the
+             * individual tree marker.
+             */
+            function showReportOnMap(
+                reportId,
+                options = {}
+            ) {
+
+                const item =
+                    reportMapItems.get(
+                        reportId
+                    );
+
+
+                if (!item) {
+                    return;
+                }
+
+
+                closePreviousInfoWindow(
+                    item.infoWindow
+                );
+
+
+                selectCard(
+                    item.card
+                );
+
+
+                enlargeMarker(
+                    item.markerContent
+                );
+
+
+                resetOtherMarkers(
+                    reportId
+                );
+
+
+                map.panTo(
+                    item.position
+                );
+
+
+                const currentZoom =
+                    map.getZoom();
+
+
+                if (
+                    !currentZoom
+                    || currentZoom < 16
+                ) {
+
+                    map.setZoom(
+                        16
+                    );
+
+                }
+
+
+                /*
+                 * Position-based InfoWindow means
+                 * the popup remains reliable even
+                 * while clustering is recalculating.
+                 */
+                item.infoWindow.setPosition(
+                    item.position
+                );
+
+
+                item.infoWindow.open({
+                    map:
+                        map
                 });
 
-            const infoWindow =
-                new google.maps.InfoWindow({
-                    content: `
-                        <div class="map-info-window">
-                            <strong>
-                                ${card.dataset.title}
-                            </strong>
 
-                            <br>
+                if (
+                    options.scrollReport
+                ) {
 
-                            <span>
-                                ${card.dataset.location}
-                            </span>
+                    scrollReportToTop(
+                        item.card
+                    );
 
-                            <br>
+                }
+            }
 
-                            <a href="${card.dataset.url}">
-                                View report
-                            </a>
-                        </div>
-                    `
-                });
 
-            marker.addEventListener(
-                'gmp-click',
-                () => {
-                    infoWindow.open({
-                        anchor: marker,
-                        map: map
+            /*
+             * On phones, Show on map is an
+             * explicit request to return to the map.
+             *
+             * Marker clicks themselves never move
+             * the page.
+             */
+            function moveToMapOnSmallScreen() {
+
+                if (
+                    window.matchMedia(
+                        '(max-width: 900px)'
+                    ).matches
+                ) {
+
+                    mapElement.scrollIntoView({
+                        behavior:
+                            'smooth',
+
+                        block:
+                            'start'
                     });
+
+                }
+            }
+
+
+            /*
+             * Create each individual report marker.
+             *
+             * We do NOT attach the marker directly
+             * to the map here. MarkerClusterer
+             * manages marker visibility.
+             */
+            cards.forEach(
+                (card) => {
+
+                    const latitude =
+                        parseFloat(
+                            card.dataset.latitude
+                        );
+
+
+                    const longitude =
+                        parseFloat(
+                            card.dataset.longitude
+                        );
+
+
+                    if (
+                        Number.isNaN(
+                            latitude
+                        )
+                        || Number.isNaN(
+                            longitude
+                        )
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const reportId =
+                        card.dataset.reportId;
+
+
+                    const position = {
+                        lat:
+                            latitude,
+
+                        lng:
+                            longitude
+                    };
+
+
+                    const markerContent =
+                        createMarkerContent(
+                            card
+                        );
+
+
+                    const marker =
+                        new AdvancedMarkerElement({
+                            position:
+                                position,
+
+                            title:
+                                card.dataset.title,
+
+                            content:
+                                markerContent,
+
+                            gmpClickable:
+                                true
+                        });
+
+
+                    const infoWindow =
+                        new google.maps.InfoWindow({
+                            content:
+                                createInfoWindowContent(
+                                    card
+                                )
+                        });
+
+
+                    reportMapItems.set(
+                        reportId,
+                        {
+                            marker:
+                                marker,
+
+                            markerContent:
+                                markerContent,
+
+                            infoWindow:
+                                infoWindow,
+
+                            card:
+                                card,
+
+                            position:
+                                position
+                        }
+                    );
+
+
+                    mapMarkers.push(
+                        marker
+                    );
+
+
+                    bounds.extend(
+                        position
+                    );
+
+
+                    /*
+                     * Click an individual tree marker:
+                     * popup opens, card highlights and
+                     * Public Reports panel scrolls.
+                     */
+                    marker.addEventListener(
+                        'gmp-click',
+                        () => {
+
+                            showReportOnMap(
+                                reportId,
+                                {
+                                    scrollReport:
+                                        true
+                                }
+                            );
+
+                        }
+                    );
+
+
+                    /*
+                     * Desktop hover visually connects
+                     * report card and marker.
+                     */
+                    card.addEventListener(
+                        'mouseenter',
+                        () => {
+
+                            enlargeMarker(
+                                markerContent
+                            );
+
+                        }
+                    );
+
+
+                    card.addEventListener(
+                        'mouseleave',
+                        () => {
+
+                            if (
+                                selectedCard
+                                !== card
+                            ) {
+
+                                resetMarker(
+                                    markerContent
+                                );
+
+                            }
+
+                        }
+                    );
+
+
+                    /*
+                     * Click anywhere on the report card
+                     * except its links to focus its tree.
+                     */
+                    card.addEventListener(
+                        'click',
+                        (event) => {
+
+                            if (
+                                event.target.closest(
+                                    'a'
+                                )
+                            ) {
+
+                                return;
+
+                            }
+
+
+                            showReportOnMap(
+                                reportId
+                            );
+
+                        }
+                    );
+
                 }
             );
 
-            bounds.extend(position);
 
-            validMarkerCount += 1;
-        });
+            /*
+             * Custom I-V Tree cluster styling.
+             *
+             * Nearby reports display as one green
+             * count marker. Zooming in separates
+             * them into the individual status pins.
+             */
+            const clusterRenderer = {
 
-        if (validMarkerCount === 1) {
-            map.setCenter(bounds.getCenter());
-            map.setZoom(13);
-        } else if (validMarkerCount > 1) {
-            map.fitBounds(bounds);
+                render: ({
+                    count,
+                    position
+                }) => {
+
+                    const clusterElement =
+                        document.createElement(
+                            'div'
+                        );
+
+
+                    clusterElement.textContent =
+                        String(
+                            count
+                        );
+
+
+                    clusterElement.setAttribute(
+                        'aria-label',
+                        `${count} public tree reports in this area`
+                    );
+
+
+                    clusterElement.style.width =
+                        '46px';
+
+
+                    clusterElement.style.height =
+                        '46px';
+
+
+                    clusterElement.style.borderRadius =
+                        '50%';
+
+
+                    clusterElement.style.background =
+                        '#166B3A';
+
+
+                    clusterElement.style.border =
+                        '3px solid #F7F5EC';
+
+
+                    clusterElement.style.color =
+                        '#FFFFFF';
+
+
+                    clusterElement.style.fontSize =
+                        '16px';
+
+
+                    clusterElement.style.fontWeight =
+                        '700';
+
+
+                    clusterElement.style.display =
+                        'flex';
+
+
+                    clusterElement.style.alignItems =
+                        'center';
+
+
+                    clusterElement.style.justifyContent =
+                        'center';
+
+
+                    clusterElement.style.boxShadow =
+                        '0 3px 10px rgba(15, 61, 46, 0.35)';
+
+
+                    clusterElement.style.cursor =
+                        'pointer';
+
+
+                    return new AdvancedMarkerElement({
+                        position:
+                            position,
+
+                        content:
+                            clusterElement,
+
+                        title:
+                            `${count} public tree reports in this area`,
+
+                        gmpClickable:
+                            true,
+
+                        zIndex:
+                            1000 + count
+                    });
+
+                }
+
+            };
+
+
+            /*
+             * Use Google's official clustering
+             * library when available.
+             *
+             * maxZoom 15 means zoom level 16+
+             * always shows individual tree markers.
+             */
+            if (
+                window.markerClusterer
+                && markerClusterer.MarkerClusterer
+            ) {
+
+                new markerClusterer.MarkerClusterer({
+                    map:
+                        map,
+
+                    markers:
+                        mapMarkers,
+
+                    algorithmOptions: {
+                        maxZoom:
+                            15
+                    },
+
+                    renderer:
+                        clusterRenderer
+                });
+
+            } else {
+
+                /*
+                 * Graceful fallback:
+                 * if the clustering library itself
+                 * fails, the map still displays the
+                 * individual report markers.
+                 */
+                console.warn(
+                    'Marker clustering unavailable. '
+                    + 'Displaying individual markers.'
+                );
+
+
+                mapMarkers.forEach(
+                    (marker) => {
+
+                        marker.map =
+                            map;
+
+                    }
+                );
+
+            }
+
+
+            /*
+             * Explicit Show on map links.
+             */
+            const showMapLinks =
+                document.querySelectorAll(
+                    '.map-show-link'
+                );
+
+
+            showMapLinks.forEach(
+                (link) => {
+
+                    link.addEventListener(
+                        'click',
+                        (event) => {
+
+                            event.preventDefault();
+
+
+                            showReportOnMap(
+                                link.dataset.reportId
+                            );
+
+
+                            moveToMapOnSmallScreen();
+
+                        }
+                    );
+
+                }
+            );
+
+
+            /*
+             * Initial map framing.
+             */
+            if (
+                mapMarkers.length === 1
+            ) {
+
+                map.setCenter(
+                    bounds.getCenter()
+                );
+
+
+                map.setZoom(
+                    13
+                );
+
+            } else if (
+                mapMarkers.length > 1
+            ) {
+
+                map.fitBounds(
+                    bounds
+                );
+
+            }
+
+
+        } catch (error) {
+
+            console.error(
+                'I-V Tree report map failed to load:',
+                error
+            );
+
+
+            const mapElement =
+                document.getElementById(
+                    'report-map'
+                );
+
+
+            if (mapElement) {
+
+                mapElement.innerHTML = `
+                    <div class="map-placeholder-content">
+
+                        <p class="section-eyebrow">
+                            Map unavailable
+                        </p>
+
+                        <h2>
+                            The map could not be loaded
+                        </h2>
+
+                        <p>
+                            You can still browse the public
+                            reports alongside the map.
+                        </p>
+
+                    </div>
+                `;
+
+            }
         }
     }
 </script>
+
+
+<script
+    src="https://unpkg.com/@googlemaps/markerclusterer@2.6.2/dist/index.min.js"
+></script>
+
 
 <script
     async
