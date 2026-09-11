@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static l10n %}
 
 {% block title %}{{ report.title }} | I-V Tree{% endblock %}
 
@@ -7,6 +7,7 @@
 <main>
     <section class="report-detail-section">
         <div class="section-container">
+
             <a
                 href="{% url 'reports:report_list' %}"
                 class="back-link"
@@ -15,93 +16,133 @@
             </a>
 
             <div class="report-detail-header">
-                <div>
-                    <p class="section-eyebrow">Tree report</p>
 
-                    <h1>{{ report.title }}</h1>
+                <div>
+                    <p class="section-eyebrow">
+                        Tree report
+                    </p>
+
+                    <h1>
+                        {{ report.title }}
+                    </h1>
 
                     <div class="report-meta">
+
                         <span class="detail-status">
                             {{ report.get_status_display }}
                         </span>
 
                         <span>
                             {% if report.town_city or report.region or report.country %}
+
                                 {% if report.town_city %}
                                     {{ report.town_city }}
                                 {% endif %}
 
                                 {% if report.region %}
-                                    {% if report.town_city %}, {% endif %}
+                                    {% if report.town_city %}
+                                        ,
+                                    {% endif %}
+
                                     {{ report.region }}
                                 {% endif %}
 
                                 {% if report.country %}
-                                    {% if report.town_city or report.region %}, {% endif %}
+                                    {% if report.town_city or report.region %}
+                                        ,
+                                    {% endif %}
+
                                     {{ report.country.name }}
                                 {% endif %}
+
                             {% elif report.location_name %}
+
                                 {{ report.location_name }}
+
                             {% else %}
+
                                 Location not specified
+
                             {% endif %}
                         </span>
 
                         <span>
-                            Reported {{ report.created_at|date:"j F Y" }}
+                            Reported
+                            {{ report.created_at|date:"j F Y" }}
                         </span>
 
                         <span>
                             {% if report.owner %}
+
                                 Reported by
+
                                 <a
                                     href="{% url 'accounts:public_profile' report.owner.username %}"
                                     class="community-author-link"
                                 >
                                     {{ report.owner.username }}
                                 </a>
+
                             {% else %}
+
                                 Reported by former member
+
                             {% endif %}
                         </span>
+
                     </div>
                 </div>
 
+
                 {% if report.status == 'IN_PROGRESS' %}
+
                     <img
                         src="{% static 'map-markers/marker-progress.png' %}"
                         alt=""
                         class="detail-marker"
                     >
+
                 {% elif report.status == 'PROTECTED' %}
+
                     <img
                         src="{% static 'map-markers/marker-protected.png' %}"
                         alt=""
                         class="detail-marker"
                     >
+
                 {% elif report.status == 'RESOLVED' %}
+
                     <img
                         src="{% static 'map-markers/marker-resolved.png' %}"
                         alt=""
                         class="detail-marker"
                     >
+
                 {% elif report.status == 'NEEDS_ATTENTION' %}
+
                     <img
                         src="{% static 'map-markers/marker-attention.png' %}"
                         alt=""
                         class="detail-marker"
                     >
+
                 {% else %}
+
                     <img
                         src="{% static 'map-markers/marker-active.png' %}"
                         alt=""
                         class="detail-marker"
                     >
+
                 {% endif %}
+
             </div>
 
+
             {% if user.is_authenticated and report.owner == user %}
+
                 <div class="owner-actions">
+
                     <a
                         href="{% url 'reports:progress_create' report.pk %}"
                         class="button button-primary"
@@ -122,144 +163,300 @@
                     >
                         Delete Report
                     </a>
+
                 </div>
+
             {% endif %}
 
+
             <div class="report-detail-grid">
+
                 <article class="report-detail-main">
+
                     {% if report.photo %}
+
                         <img
                             src="{{ report.photo.url }}"
                             alt="Photograph of {{ report.title }}"
                             class="report-detail-photo"
                         >
+
                     {% else %}
+
                         <div class="report-photo-placeholder">
-                            <span>No photograph added</span>
+                            <span>
+                                No photograph added
+                            </span>
                         </div>
+
                     {% endif %}
 
-                    <div class="report-information-card">
-                        <h2>About this tree</h2>
 
-                        <p>{{ report.description }}</p>
+                    <div class="report-information-card">
+
+                        <h2>
+                            About this tree
+                        </h2>
+
+                        <p>
+                            {{ report.description }}
+                        </p>
 
                         <dl class="report-facts">
+
                             <div>
-                                <dt>Tree species</dt>
+                                <dt>
+                                    Tree species
+                                </dt>
+
                                 <dd>
                                     {% if report.tree_species %}
+
                                         {{ report.tree_species }}
+
                                     {% else %}
+
                                         Unknown
+
                                     {% endif %}
                                 </dd>
                             </div>
 
                             <div>
-                                <dt>Status</dt>
-                                <dd>{{ report.get_status_display }}</dd>
+                                <dt>
+                                    Status
+                                </dt>
+
+                                <dd>
+                                    {{ report.get_status_display }}
+                                </dd>
                             </div>
+
                         </dl>
+
                     </div>
+
                 </article>
 
+
                 <aside class="report-detail-sidebar">
+
                     <div class="location-card">
-                        <p class="section-eyebrow">Location</p>
+
+                        <p class="section-eyebrow">
+                            Location
+                        </p>
 
                         <h2>
                             {% if report.town_city %}
+
                                 {{ report.town_city }}
+
                             {% elif report.region %}
+
                                 {{ report.region }}
+
                             {% elif report.country %}
+
                                 {{ report.country.name }}
+
                             {% elif report.location_name %}
+
                                 {{ report.location_name }}
+
                             {% else %}
+
                                 Location not specified
+
                             {% endif %}
                         </h2>
 
+
                         {% if report.town_city or report.region or report.country %}
+
                             <p>
                                 {% if report.town_city %}
                                     {{ report.town_city }}
                                 {% endif %}
 
                                 {% if report.region %}
-                                    {% if report.town_city %}, {% endif %}
+                                    {% if report.town_city %}
+                                        ,
+                                    {% endif %}
+
                                     {{ report.region }}
                                 {% endif %}
 
                                 {% if report.country %}
-                                    {% if report.town_city or report.region %}, {% endif %}
+                                    {% if report.town_city or report.region %}
+                                        ,
+                                    {% endif %}
+
                                     {{ report.country.name }}
                                 {% endif %}
                             </p>
+
                         {% elif report.location_name %}
-                            <p>{{ report.location_name }}</p>
+
+                            <p>
+                                {{ report.location_name }}
+                            </p>
+
                         {% endif %}
 
+
                         {% if report.what3words %}
+
                             <div class="coordinate-list">
                                 <p>
-                                    <strong>what3words</strong>
+                                    <strong>
+                                        what3words
+                                    </strong>
+
                                     {{ report.what3words }}
                                 </p>
                             </div>
+
                         {% endif %}
 
-                        <div class="detail-map-placeholder">
-                            <p>Interactive map</p>
 
-                            <span>
-                                Google Maps will display this report here.
-                            </span>
-                        </div>
+                        {% if google_maps_api_key and google_maps_map_id %}
+
+                            <div
+                                id="detail-report-map"
+                                class="detail-report-map"
+                                data-latitude="{{ report.latitude|unlocalize }}"
+                                data-longitude="{{ report.longitude|unlocalize }}"
+                                data-title="{{ report.title }}"
+                                aria-label="Map showing the location of {{ report.title }}"
+                                style="min-height: 320px; width: 100%; border-radius: 12px; overflow: hidden;"
+                            ></div>
+
+                            {% if report.status == 'IN_PROGRESS' %}
+
+                                <span
+                                    id="detail-marker-url"
+                                    data-marker-url="{% static 'map-markers/marker-progress.png' %}"
+                                    hidden
+                                ></span>
+
+                            {% elif report.status == 'PROTECTED' %}
+
+                                <span
+                                    id="detail-marker-url"
+                                    data-marker-url="{% static 'map-markers/marker-protected.png' %}"
+                                    hidden
+                                ></span>
+
+                            {% elif report.status == 'RESOLVED' %}
+
+                                <span
+                                    id="detail-marker-url"
+                                    data-marker-url="{% static 'map-markers/marker-resolved.png' %}"
+                                    hidden
+                                ></span>
+
+                            {% elif report.status == 'NEEDS_ATTENTION' %}
+
+                                <span
+                                    id="detail-marker-url"
+                                    data-marker-url="{% static 'map-markers/marker-attention.png' %}"
+                                    hidden
+                                ></span>
+
+                            {% else %}
+
+                                <span
+                                    id="detail-marker-url"
+                                    data-marker-url="{% static 'map-markers/marker-active.png' %}"
+                                    hidden
+                                ></span>
+
+                            {% endif %}
+
+                        {% else %}
+
+                            <div class="detail-map-placeholder">
+
+                                <p>
+                                    Map unavailable
+                                </p>
+
+                                <span>
+                                    This report's location cannot be
+                                    displayed right now.
+                                </span>
+
+                            </div>
+
+                        {% endif %}
+
                     </div>
+
                 </aside>
+
             </div>
 
+
             <section class="progress-section">
+
                 <div class="progress-heading">
+
                     <div>
-                        <p class="section-eyebrow">Monitoring</p>
-                        <h2>Progress Updates</h2>
+                        <p class="section-eyebrow">
+                            Monitoring
+                        </p>
+
+                        <h2>
+                            Progress Updates
+                        </h2>
                     </div>
 
                     <p>
                         Follow the history of work carried out on this tree.
                     </p>
+
                 </div>
 
+
                 <div class="progress-list">
+
                     {% for update in report.progress_updates.all %}
+
                         <article class="progress-card">
+
                             <div class="progress-date">
                                 {{ update.created_at|date:"j M Y" }}
                             </div>
 
                             <div>
+
                                 {% if update.status %}
+
                                     <span class="progress-status">
                                         {{ update.get_status_display }}
                                     </span>
+
                                 {% endif %}
 
-                                <p>{{ update.description }}</p>
+                                <p>
+                                    {{ update.description }}
+                                </p>
 
                                 {% if update.photo %}
+
                                     <img
                                         src="{{ update.photo.url }}"
                                         alt="Progress update for {{ report.title }}"
                                         class="progress-photo"
                                     >
+
                                 {% endif %}
 
                                 {% if user.is_authenticated and update.author == user %}
+
                                     <div class="progress-actions">
+
                                         <a
                                             href="{% url 'reports:progress_edit' update.pk %}"
                                             class="text-link"
@@ -273,23 +470,247 @@
                                         >
                                             Delete Update
                                         </a>
+
                                     </div>
+
                                 {% endif %}
+
                             </div>
+
                         </article>
+
                     {% empty %}
+
                         <div class="progress-empty">
-                            <h3>No progress updates yet</h3>
+
+                            <h3>
+                                No progress updates yet
+                            </h3>
 
                             <p>
                                 Updates will appear here as work on this
                                 tree is recorded.
                             </p>
+
                         </div>
+
                     {% endfor %}
+
                 </div>
+
             </section>
+
         </div>
     </section>
 </main>
+
+
+{% if google_maps_api_key and google_maps_map_id %}
+
+<script>
+    async function initDetailReportMap() {
+        const mapElement =
+            document.getElementById(
+                'detail-report-map'
+            );
+
+        if (!mapElement) {
+            return;
+        }
+
+        try {
+
+            const latitude =
+                parseFloat(
+                    mapElement.dataset.latitude
+                );
+
+            const longitude =
+                parseFloat(
+                    mapElement.dataset.longitude
+                );
+
+
+            if (
+                Number.isNaN(latitude)
+                || Number.isNaN(longitude)
+            ) {
+                throw new Error(
+                    'Report coordinates are unavailable.'
+                );
+            }
+
+
+            const { Map: GoogleMap } =
+                await google.maps.importLibrary(
+                    'maps'
+                );
+
+
+            const { AdvancedMarkerElement } =
+                await google.maps.importLibrary(
+                    'marker'
+                );
+
+
+            const position = {
+                lat:
+                    latitude,
+
+                lng:
+                    longitude
+            };
+
+
+            const map =
+                new GoogleMap(
+                    mapElement,
+                    {
+                        center:
+                            position,
+
+                        zoom:
+                            16,
+
+                        mapId:
+                            '{{ google_maps_map_id }}',
+
+                        mapTypeControl:
+                            false,
+
+                        streetViewControl:
+                            false,
+
+                        clickableIcons:
+                            false
+                    }
+                );
+
+
+            const markerUrlElement =
+                document.getElementById(
+                    'detail-marker-url'
+                );
+
+
+            const markerImage =
+                document.createElement(
+                    'img'
+                );
+
+
+            markerImage.src =
+                markerUrlElement
+                    ? markerUrlElement.dataset.markerUrl
+                    : '';
+
+
+            markerImage.alt =
+                '';
+
+
+            markerImage.style.width =
+                '42px';
+
+
+            markerImage.style.height =
+                '52px';
+
+
+            markerImage.style.objectFit =
+                'contain';
+
+
+            markerImage.style.display =
+                'block';
+
+
+            new AdvancedMarkerElement({
+                map:
+                    map,
+
+                position:
+                    position,
+
+                title:
+                    mapElement.dataset.title,
+
+                content:
+                    markerImage
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                'I-V Tree detail map failed to load:',
+                error
+            );
+
+
+            mapElement.innerHTML =
+                '';
+
+
+            const message =
+                document.createElement(
+                    'div'
+                );
+
+
+            message.className =
+                'map-placeholder-content';
+
+
+            const heading =
+                document.createElement(
+                    'p'
+                );
+
+
+            heading.className =
+                'section-eyebrow';
+
+
+            heading.textContent =
+                'Map unavailable';
+
+
+            const description =
+                document.createElement(
+                    'p'
+                );
+
+
+            description.textContent =
+                'The report is still available, but its map '
+                + 'could not be loaded.';
+
+
+            message.appendChild(
+                heading
+            );
+
+
+            message.appendChild(
+                description
+            );
+
+
+            mapElement.appendChild(
+                message
+            );
+
+        }
+    }
+</script>
+
+
+<script
+    async
+    src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&loading=async&callback=initDetailReportMap"
+></script>
+
+{% endif %}
+
 {% endblock %}

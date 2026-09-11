@@ -231,7 +231,11 @@ def report_detail(request, pk):
     return render(
         request,
         'reports/report_detail.html',
-        {'report': report},
+        {
+            'report': report,
+            'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
+            'google_maps_map_id': settings.GOOGLE_MAPS_MAP_ID,
+        },
     )
 
 
