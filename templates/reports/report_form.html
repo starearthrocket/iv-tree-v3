@@ -16,7 +16,6 @@
             <div class="report-form-heading">
                 {% if report %}
                     <p class="section-eyebrow">Edit report</p>
-
                     <h1>Update your tree report</h1>
 
                     <p>
@@ -24,11 +23,10 @@
                     </p>
                 {% else %}
                     <p class="section-eyebrow">Report a tree</p>
-
                     <h1>Help us record an affected tree</h1>
 
                     <p>
-                        Add what you know about the tree and its location.
+                        Tell us about the tree and choose its location.
                         You can continue adding progress updates over time.
                     </p>
                 {% endif %}
@@ -40,6 +38,15 @@
                 class="report-form"
             >
                 {% csrf_token %}
+
+                <!--
+                    Location data is stored behind the scenes.
+                    These values are populated by the map or
+                    browser geolocation.
+                -->
+                {{ form.latitude }}
+                {{ form.longitude }}
+                {{ form.what3words }}
 
                 {% if form.non_field_errors %}
                     <div class="form-errors">
@@ -95,6 +102,10 @@
                     {{ form.location_name.label_tag }}
                     {{ form.location_name }}
 
+                    <small>
+                        For example: Brighton, Worcestershire or Cardiff.
+                    </small>
+
                     {% for error in form.location_name.errors %}
                         <p class="field-error">
                             {{ error }}
@@ -104,15 +115,26 @@
 
                 <div class="form-group">
                     <label for="location-picker-map">
-                        Choose the tree location
+                        Where is the tree?
                     </label>
 
                     <p class="form-help-text">
-                        Click the map as accurately as possible to mark
-                        where the tree is located.
+                        Use your current location if you are near the tree,
+                        or click the map to place the marker yourself.
                     </p>
 
                     {% if google_maps_api_key and google_maps_map_id %}
+
+                        <div class="location-picker-actions">
+                            <button
+                                type="button"
+                                id="use-current-location"
+                                class="button button-outline-dark"
+                            >
+                                Use my current location
+                            </button>
+                        </div>
+
                         <div
                             id="location-picker-map"
                             class="report-map"
@@ -124,40 +146,25 @@
                             class="form-help-text"
                             aria-live="polite"
                         >
-                            Click the map to select a location.
+                            No tree location selected yet.
                         </p>
+
                     {% else %}
+
                         <div class="form-errors">
                             <p>
                                 The location map is currently unavailable.
-                                You can still enter the coordinates below.
+                                Please try again later.
                             </p>
                         </div>
+
                     {% endif %}
-                </div>
-
-                <div class="form-group">
-                    {{ form.latitude.label_tag }}
-                    {{ form.latitude }}
-
-                    <small>
-                        Automatically updated when you click the map.
-                    </small>
 
                     {% for error in form.latitude.errors %}
                         <p class="field-error">
                             {{ error }}
                         </p>
                     {% endfor %}
-                </div>
-
-                <div class="form-group">
-                    {{ form.longitude.label_tag }}
-                    {{ form.longitude }}
-
-                    <small>
-                        Automatically updated when you click the map.
-                    </small>
 
                     {% for error in form.longitude.errors %}
                         <p class="field-error">
@@ -167,24 +174,13 @@
                 </div>
 
                 <div class="form-group">
-                    {{ form.what3words.label_tag }}
-                    {{ form.what3words }}
-
-                    <small>
-                        This will be added automatically once the
-                        what3words integration is connected.
-                    </small>
-
-                    {% for error in form.what3words.errors %}
-                        <p class="field-error">
-                            {{ error }}
-                        </p>
-                    {% endfor %}
-                </div>
-
-                <div class="form-group">
                     {{ form.visibility.label_tag }}
                     {{ form.visibility }}
+
+                    <small>
+                        Public reports can be viewed on the I-V Tree map.
+                        Private reports are visible only to you.
+                    </small>
 
                     {% for error in form.visibility.errors %}
                         <p class="field-error">
@@ -244,6 +240,9 @@
             const statusElement =
                 document.getElementById('map-location-status');
 
+            const currentLocationButton =
+                document.getElementById('use-current-location');
+
             const existingLatitude =
                 parseFloat(latitudeInput.value);
 
@@ -278,7 +277,11 @@
 
             let locationMarker = null;
 
-            function setTreeLocation(position) {
+            function setTreeLocation(
+                position,
+                statusMessage,
+                zoomLevel = null
+            ) {
                 latitudeInput.value =
                     position.lat.toFixed(6);
 
@@ -296,15 +299,25 @@
                         });
                 }
 
+                map.setCenter(position);
+
+                if (zoomLevel) {
+                    map.setZoom(zoomLevel);
+                }
+
                 statusElement.textContent =
-                    'Tree location selected. You can click again to adjust it.';
+                    statusMessage;
             }
 
             if (hasExistingLocation) {
-                setTreeLocation(initialPosition);
-
-                statusElement.textContent =
-                    'Current tree location shown. Click the map to change it.';
+                setTreeLocation(
+                    initialPosition,
+                    (
+                        '✓ Tree location selected. '
+                        + 'Click the map to adjust it if needed.'
+                    ),
+                    15
+                );
             }
 
             map.addListener(
@@ -315,9 +328,109 @@
                         lng: event.latLng.lng()
                     };
 
-                    setTreeLocation(position);
+                    setTreeLocation(
+                        position,
+                        (
+                            '✓ Tree location selected. '
+                            + 'Click again to adjust it.'
+                        )
+                    );
                 }
             );
+
+            currentLocationButton.addEventListener(
+                'click',
+                () => {
+                    if (!navigator.geolocation) {
+                        statusElement.textContent =
+                            (
+                                'Your browser does not support location '
+                                + 'services. Please select the tree on the map.'
+                            );
+
+                        return;
+                    }
+
+                    currentLocationButton.disabled = true;
+
+                    currentLocationButton.textContent =
+                        'Finding your location...';
+
+                    statusElement.textContent =
+                        'Requesting your current location...';
+
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const currentPosition = {
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude
+                            };
+
+                            setTreeLocation(
+                                currentPosition,
+                                (
+                                    '✓ Current location selected. '
+                                    + 'Move the marker if the tree is '
+                                    + 'slightly further away.'
+                                ),
+                                17
+                            );
+
+                            currentLocationButton.disabled = false;
+
+                            currentLocationButton.textContent =
+                                'Use my current location';
+                        },
+
+                        (error) => {
+                            let message =
+                                (
+                                    'Your current location could not be used. '
+                                    + 'Please select the tree on the map.'
+                                );
+
+                            if (error.code === error.PERMISSION_DENIED) {
+                                message =
+                                    (
+                                        'Location permission was denied. '
+                                        + 'Please select the tree on the map.'
+                                    );
+                            }
+
+                            if (error.code === error.POSITION_UNAVAILABLE) {
+                                message =
+                                    (
+                                        'Your current location is unavailable. '
+                                        + 'Please select the tree on the map.'
+                                    );
+                            }
+
+                            if (error.code === error.TIMEOUT) {
+                                message =
+                                    (
+                                        'Finding your location took too long. '
+                                        + 'Please try again or use the map.'
+                                    );
+                            }
+
+                            statusElement.textContent =
+                                message;
+
+                            currentLocationButton.disabled = false;
+
+                            currentLocationButton.textContent =
+                                'Use my current location';
+                        },
+
+                        {
+                            enableHighAccuracy: true,
+                            timeout: 10000,
+                            maximumAge: 0
+                        }
+                    );
+                }
+            );
+
         } catch (error) {
             console.error(
                 'I-V Tree location map failed to load:',
@@ -329,7 +442,10 @@
 
             if (statusElement) {
                 statusElement.textContent =
-                    'The map could not be loaded. You can enter the coordinates manually.';
+                    (
+                        'The map could not be loaded. '
+                        + 'Please try again later.'
+                    );
             }
         }
     }

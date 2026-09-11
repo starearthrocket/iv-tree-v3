@@ -200,3 +200,9 @@ GOOGLE_MAPS_MAP_ID = os.getenv(
     'GOOGLE_MAPS_MAP_ID',
     '',
 )
+
+
+WHAT3WORDS_API_KEY = os.getenv(
+    'WHAT3WORDS_API_KEY',
+    '',
+)

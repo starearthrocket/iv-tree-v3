@@ -28,29 +28,13 @@ class TreeReportForm(forms.ModelForm):
                     ),
                 }
             ),
-            'latitude': forms.NumberInput(
-                attrs={
-                    'step': '0.000001',
-                    'placeholder': '51.507400',
-                }
-            ),
-            'longitude': forms.NumberInput(
-                attrs={
-                    'step': '0.000001',
-                    'placeholder': '-0.127800',
-                }
-            ),
-            'what3words': forms.TextInput(
-                attrs={
-                    'placeholder': 'Added automatically later',
-                    'readonly': 'readonly',
-                }
-            ),
+            'latitude': forms.HiddenInput(),
+            'longitude': forms.HiddenInput(),
+            'what3words': forms.HiddenInput(),
         }
         labels = {
             'tree_species': 'Tree species',
-            'location_name': 'Location',
-            'what3words': 'What3words address',
+            'location_name': 'Town or county',
         }
 
 

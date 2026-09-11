@@ -1,3 +1,9 @@
+import json
+import logging
+import urllib.error
+import urllib.parse
+import urllib.request
+
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -6,6 +12,62 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import ProgressUpdateForm, TreeReportForm
 from .models import ProgressUpdate, TreeReport
+
+
+logger = logging.getLogger(__name__)
+
+
+def convert_to_what3words(latitude, longitude):
+    """Convert latitude and longitude into a what3words address."""
+
+    if not settings.WHAT3WORDS_API_KEY:
+        return None
+
+    coordinates = f'{latitude},{longitude}'
+
+    query = urllib.parse.urlencode(
+        {
+            'coordinates': coordinates,
+            'language': 'en',
+        }
+    )
+
+    url = (
+        'https://api.what3words.com/v3/convert-to-3wa?'
+        f'{query}'
+    )
+
+    request = urllib.request.Request(
+        url,
+        headers={
+            'X-Api-Key': settings.WHAT3WORDS_API_KEY,
+        },
+    )
+
+    try:
+        with urllib.request.urlopen(
+            request,
+            timeout=5,
+        ) as response:
+            data = json.load(response)
+
+        words = data.get('words')
+
+        if words:
+            return f'///{words}'
+
+    except (
+        urllib.error.HTTPError,
+        urllib.error.URLError,
+        TimeoutError,
+        json.JSONDecodeError,
+    ) as error:
+        logger.warning(
+            'what3words conversion failed: %s',
+            error,
+        )
+
+    return None
 
 
 def report_list(request):
@@ -68,12 +130,30 @@ def report_create(request):
         if form.is_valid():
             report = form.save(commit=False)
             report.owner = request.user
+
+            three_word_address = convert_to_what3words(
+                report.latitude,
+                report.longitude,
+            )
+
+            if three_word_address:
+                report.what3words = three_word_address
+
             report.save()
 
             messages.success(
                 request,
                 'Your tree report has been submitted successfully.'
             )
+
+            if not three_word_address:
+                messages.warning(
+                    request,
+                    (
+                        'The report was saved, but the what3words '
+                        'address could not be generated.'
+                    )
+                )
 
             return redirect(
                 'reports:report_detail',
@@ -104,6 +184,8 @@ def report_edit(request, pk):
         owner=request.user,
     )
 
+    existing_what3words = report.what3words
+
     if request.method == 'POST':
         form = TreeReportForm(
             request.POST,
@@ -112,12 +194,33 @@ def report_edit(request, pk):
         )
 
         if form.is_valid():
-            form.save()
+            report = form.save(commit=False)
+
+            three_word_address = convert_to_what3words(
+                report.latitude,
+                report.longitude,
+            )
+
+            if three_word_address:
+                report.what3words = three_word_address
+            else:
+                report.what3words = existing_what3words
+
+            report.save()
 
             messages.success(
                 request,
                 'Your tree report has been updated successfully.'
             )
+
+            if not three_word_address:
+                messages.warning(
+                    request,
+                    (
+                        'The report was updated, but the what3words '
+                        'address could not be refreshed.'
+                    )
+                )
 
             return redirect(
                 'reports:report_detail',
