@@ -2350,3 +2350,10 @@ a {
         border-radius: 999px;
     }
 }
+
+/* Ensure filtered map reports are actually hidden */
+
+.map-report-card[hidden],
+#map-no-filter-results[hidden] {
+    display: none !important;
+}
