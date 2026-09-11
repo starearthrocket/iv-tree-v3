@@ -7,8 +7,9 @@ import urllib.request
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
 
 from .forms import ProgressUpdateForm, TreeReportForm
 from .models import ProgressUpdate, TreeReport
@@ -70,6 +71,120 @@ def convert_to_what3words(latitude, longitude):
     return None
 
 
+def convert_from_what3words(three_word_address):
+    """Convert a what3words address into coordinates."""
+
+    if not settings.WHAT3WORDS_API_KEY:
+        return None
+
+    words = three_word_address.strip()
+
+    if words.startswith('///'):
+        words = words[3:]
+
+    query = urllib.parse.urlencode(
+        {
+            'words': words,
+        }
+    )
+
+    url = (
+        'https://api.what3words.com/v3/convert-to-coordinates?'
+        f'{query}'
+    )
+
+    request = urllib.request.Request(
+        url,
+        headers={
+            'X-Api-Key': settings.WHAT3WORDS_API_KEY,
+        },
+    )
+
+    try:
+        with urllib.request.urlopen(
+            request,
+            timeout=5,
+        ) as response:
+            data = json.load(response)
+
+        coordinates = data.get('coordinates')
+        returned_words = data.get('words')
+
+        if not coordinates or not returned_words:
+            return None
+
+        return {
+            'latitude': coordinates.get('lat'),
+            'longitude': coordinates.get('lng'),
+            'what3words': f'///{returned_words}',
+            'country': data.get('country', ''),
+            'nearest_place': data.get('nearestPlace', ''),
+        }
+
+    except urllib.error.HTTPError as error:
+        logger.warning(
+            'what3words address lookup failed: %s',
+            error,
+        )
+
+    except (
+        urllib.error.URLError,
+        TimeoutError,
+        json.JSONDecodeError,
+    ) as error:
+        logger.warning(
+            'what3words lookup unavailable: %s',
+            error,
+        )
+
+    return None
+
+
+@login_required
+@require_POST
+def what3words_lookup(request):
+    """Return coordinates for a submitted what3words address."""
+
+    three_word_address = request.POST.get(
+        'what3words',
+        '',
+    ).strip()
+
+    if not three_word_address:
+        return JsonResponse(
+            {
+                'success': False,
+                'message': (
+                    'Enter a what3words address first.'
+                ),
+            },
+            status=400,
+        )
+
+    result = convert_from_what3words(
+        three_word_address
+    )
+
+    if not result:
+        return JsonResponse(
+            {
+                'success': False,
+                'message': (
+                    'That what3words address could not be found. '
+                    'Check the three words and try again.'
+                ),
+            },
+            status=400,
+        )
+
+    return JsonResponse(
+        {
+            'success': True,
+            **result,
+        }
+    )
+
+
 def report_list(request):
     """Display public tree reports, newest first."""
 
@@ -125,7 +240,10 @@ def report_create(request):
     """Allow a logged-in user to submit a new tree report."""
 
     if request.method == 'POST':
-        form = TreeReportForm(request.POST, request.FILES)
+        form = TreeReportForm(
+            request.POST,
+            request.FILES,
+        )
 
         if form.is_valid():
             report = form.save(commit=False)
@@ -279,7 +397,10 @@ def progress_create(request, pk):
     )
 
     if request.method == 'POST':
-        form = ProgressUpdateForm(request.POST, request.FILES)
+        form = ProgressUpdateForm(
+            request.POST,
+            request.FILES,
+        )
 
         if form.is_valid():
             update = form.save(commit=False)
@@ -289,7 +410,12 @@ def progress_create(request, pk):
 
             if update.status:
                 report.status = update.status
-                report.save(update_fields=['status', 'updated_at'])
+                report.save(
+                    update_fields=[
+                        'status',
+                        'updated_at',
+                    ]
+                )
 
             messages.success(
                 request,
@@ -338,7 +464,12 @@ def progress_edit(request, pk):
 
             if update.status:
                 report.status = update.status
-                report.save(update_fields=['status', 'updated_at'])
+                report.save(
+                    update_fields=[
+                        'status',
+                        'updated_at',
+                    ]
+                )
 
             messages.success(
                 request,
@@ -350,7 +481,9 @@ def progress_edit(request, pk):
                 pk=report.pk,
             )
     else:
-        form = ProgressUpdateForm(instance=update)
+        form = ProgressUpdateForm(
+            instance=update
+        )
 
     return render(
         request,
@@ -378,16 +511,23 @@ def progress_delete(request, pk):
     if request.method == 'POST':
         update.delete()
 
-        latest_update = report.progress_updates.exclude(
-            status=''
-        ).first()
+        latest_update = (
+            report.progress_updates
+            .exclude(status='')
+            .first()
+        )
 
         if latest_update:
             report.status = latest_update.status
         else:
             report.status = TreeReport.Status.ACTIVE
 
-        report.save(update_fields=['status', 'updated_at'])
+        report.save(
+            update_fields=[
+                'status',
+                'updated_at',
+            ]
+        )
 
         messages.success(
             request,

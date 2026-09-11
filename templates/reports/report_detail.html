@@ -25,7 +25,27 @@
                             {{ report.get_status_display }}
                         </span>
 
-                        <span>{{ report.location_name }}</span>
+                        <span>
+                            {% if report.town_city or report.region or report.country %}
+                                {% if report.town_city %}
+                                    {{ report.town_city }}
+                                {% endif %}
+
+                                {% if report.region %}
+                                    {% if report.town_city %}, {% endif %}
+                                    {{ report.region }}
+                                {% endif %}
+
+                                {% if report.country %}
+                                    {% if report.town_city or report.region %}, {% endif %}
+                                    {{ report.country.name }}
+                                {% endif %}
+                            {% elif report.location_name %}
+                                {{ report.location_name }}
+                            {% else %}
+                                Location not specified
+                            {% endif %}
+                        </span>
 
                         <span>
                             Reported {{ report.created_at|date:"j F Y" }}
@@ -140,13 +160,6 @@
                                 <dt>Status</dt>
                                 <dd>{{ report.get_status_display }}</dd>
                             </div>
-
-                            {% if report.what3words %}
-                                <div>
-                                    <dt>What3words</dt>
-                                    <dd>{{ report.what3words }}</dd>
-                                </div>
-                            {% endif %}
                         </dl>
                     </div>
                 </article>
@@ -155,7 +168,48 @@
                     <div class="location-card">
                         <p class="section-eyebrow">Location</p>
 
-                        <h2>{{ report.location_name }}</h2>
+                        <h2>
+                            {% if report.town_city %}
+                                {{ report.town_city }}
+                            {% elif report.region %}
+                                {{ report.region }}
+                            {% elif report.country %}
+                                {{ report.country.name }}
+                            {% elif report.location_name %}
+                                {{ report.location_name }}
+                            {% else %}
+                                Location not specified
+                            {% endif %}
+                        </h2>
+
+                        {% if report.town_city or report.region or report.country %}
+                            <p>
+                                {% if report.town_city %}
+                                    {{ report.town_city }}
+                                {% endif %}
+
+                                {% if report.region %}
+                                    {% if report.town_city %}, {% endif %}
+                                    {{ report.region }}
+                                {% endif %}
+
+                                {% if report.country %}
+                                    {% if report.town_city or report.region %}, {% endif %}
+                                    {{ report.country.name }}
+                                {% endif %}
+                            </p>
+                        {% elif report.location_name %}
+                            <p>{{ report.location_name }}</p>
+                        {% endif %}
+
+                        {% if report.what3words %}
+                            <div class="coordinate-list">
+                                <p>
+                                    <strong>what3words</strong>
+                                    {{ report.what3words }}
+                                </p>
+                            </div>
+                        {% endif %}
 
                         <div class="detail-map-placeholder">
                             <p>Interactive map</p>
@@ -163,18 +217,6 @@
                             <span>
                                 Google Maps will display this report here.
                             </span>
-                        </div>
-
-                        <div class="coordinate-list">
-                            <p>
-                                <strong>Latitude</strong>
-                                {{ report.latitude }}
-                            </p>
-
-                            <p>
-                                <strong>Longitude</strong>
-                                {{ report.longitude }}
-                            </p>
                         </div>
                     </div>
                 </aside>

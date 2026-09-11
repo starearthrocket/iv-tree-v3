@@ -13,18 +13,48 @@ class TreeReportForm(forms.ModelForm):
             'tree_species',
             'description',
             'photo',
-            'location_name',
+            'country',
+            'region',
+            'town_city',
             'latitude',
             'longitude',
             'what3words',
             'visibility',
         ]
         widgets = {
+            'title': forms.TextInput(
+                attrs={
+                    'placeholder': (
+                        'e.g. Ivy-covered oak beside footpath'
+                    ),
+                }
+            ),
+            'tree_species': forms.TextInput(
+                attrs={
+                    'placeholder': (
+                        'e.g. Oak, ash, beech — leave blank if unsure'
+                    ),
+                }
+            ),
             'description': forms.Textarea(
                 attrs={
                     'rows': 5,
                     'placeholder': (
                         'Describe the tree and the ivy affecting it.'
+                    ),
+                }
+            ),
+            'region': forms.TextInput(
+                attrs={
+                    'placeholder': (
+                        'e.g. Worcestershire, Styria or California'
+                    ),
+                }
+            ),
+            'town_city': forms.TextInput(
+                attrs={
+                    'placeholder': (
+                        'e.g. Malvern, Graz or Brighton'
                     ),
                 }
             ),
@@ -34,7 +64,9 @@ class TreeReportForm(forms.ModelForm):
         }
         labels = {
             'tree_species': 'Tree species',
-            'location_name': 'Town or county',
+            'country': 'Country',
+            'region': 'Region / county / state',
+            'town_city': 'Town / city',
         }
 
 

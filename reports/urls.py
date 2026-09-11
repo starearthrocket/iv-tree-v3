@@ -9,6 +9,11 @@ urlpatterns = [
     path('map/', views.report_map, name='report_map'),
     path('report/', views.report_create, name='report_create'),
     path(
+        'what3words/lookup/',
+        views.what3words_lookup,
+        name='what3words_lookup',
+    ),
+    path(
         '<int:pk>/progress/add/',
         views.progress_create,
         name='progress_create',

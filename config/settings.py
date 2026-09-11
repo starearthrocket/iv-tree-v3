@@ -206,3 +206,14 @@ WHAT3WORDS_API_KEY = os.getenv(
     'WHAT3WORDS_API_KEY',
     '',
 )
+
+
+# ---------------------------------------------------------
+# Country selector
+# ---------------------------------------------------------
+
+COUNTRIES_FIRST = [
+    'GB',
+]
+
+COUNTRIES_FIRST_BREAK = '----------------'

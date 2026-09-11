@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django_countries.fields import CountryField
 
 
 class TreeReport(models.Model):
@@ -24,14 +25,42 @@ class TreeReport(models.Model):
         null=True,
         blank=True,
     )
+
     title = models.CharField(max_length=120)
-    tree_species = models.CharField(max_length=120, blank=True)
+
+    tree_species = models.CharField(
+        max_length=120,
+        blank=True,
+    )
+
     description = models.TextField()
+
     photo = models.ImageField(
         upload_to='tree-reports/',
         blank=True,
     )
-    location_name = models.CharField(max_length=255)
+
+    # Temporary legacy field retained while older reports are migrated.
+    location_name = models.CharField(
+        max_length=255,
+        blank=True,
+    )
+
+    country = CountryField(
+        blank_label='Select country',
+    )
+
+    region = models.CharField(
+        max_length=120,
+        blank=True,
+        help_text='County, state, province or region.',
+    )
+
+    town_city = models.CharField(
+        max_length=120,
+        blank=True,
+    )
+
     latitude = models.DecimalField(
         max_digits=9,
         decimal_places=6,
@@ -40,6 +69,7 @@ class TreeReport(models.Model):
             MaxValueValidator(90),
         ],
     )
+
     longitude = models.DecimalField(
         max_digits=9,
         decimal_places=6,
@@ -48,24 +78,33 @@ class TreeReport(models.Model):
             MaxValueValidator(180),
         ],
     )
+
     what3words = models.CharField(
         max_length=80,
         blank=True,
     )
+
     status = models.CharField(
         max_length=20,
         choices=Status.choices,
         default=Status.ACTIVE,
         db_index=True,
     )
+
     visibility = models.CharField(
         max_length=10,
         choices=Visibility.choices,
         default=Visibility.PUBLIC,
         db_index=True,
     )
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
 
     class Meta:
         ordering = ['-created_at']
@@ -82,6 +121,7 @@ class ProgressUpdate(models.Model):
         on_delete=models.CASCADE,
         related_name='progress_updates',
     )
+
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
@@ -89,18 +129,27 @@ class ProgressUpdate(models.Model):
         null=True,
         blank=True,
     )
+
     description = models.TextField()
+
     photo = models.ImageField(
         upload_to='progress-updates/',
         blank=True,
     )
+
     status = models.CharField(
         max_length=20,
         choices=TreeReport.Status.choices,
         blank=True,
     )
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
 
     class Meta:
         ordering = ['-created_at']
