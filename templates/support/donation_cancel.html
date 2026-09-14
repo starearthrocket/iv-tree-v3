@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment Cancelled | I-V Tree{% endblock %}
+
+{% block content %}
+<main>
+    <section class="support-section">
+        <div class="section-container">
+
+            <div class="support-result-card">
+
+                <p class="section-eyebrow">
+                    Payment cancelled
+                </p>
+
+                <h1>
+                    No payment was taken
+                </h1>
+
+                <p>
+                    Your payment was cancelled before it was completed.
+                    You have not been charged.
+                </p>
+
+                <p>
+                    If you still want to support I-V Tree, you can return
+                    to the support page and try again whenever you like.
+                </p>
+
+                <div class="support-result-actions">
+                    <a
+                        href="{% url 'support:support_page' %}"
+                        class="button button-primary"
+                    >
+                        Return to Support
+                    </a>
+
+                    <a
+                        href="{% url 'core:home' %}"
+                        class="button button-outline-dark"
+                    >
+                        Return Home
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+</main>
+{% endblock %}
