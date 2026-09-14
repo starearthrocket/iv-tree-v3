@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Thank You | I-V Tree{% endblock %}
+
+{% block content %}
+<main>
+    <section class="support-section">
+        <div class="section-container">
+
+            <div class="support-result-card">
+
+                <p class="section-eyebrow">
+                    Payment complete
+                </p>
+
+                <h1>
+                    Thank you for supporting I-V Tree
+                </h1>
+
+                <p>
+                    Your contribution helps towards the operating
+                    and development costs of the I-V Tree platform.
+                </p>
+
+                <p>
+                    I-V Tree is not currently a registered charity,
+                    and contributions are not eligible for Gift Aid.
+                </p>
+
+                <div class="support-result-actions">
+                    <a
+                        href="{% url 'core:home' %}"
+                        class="button button-primary"
+                    >
+                        Return Home
+                    </a>
+
+                    <a
+                        href="{% url 'reports:report_map' %}"
+                        class="button button-outline-dark"
+                    >
+                        Explore Trees
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+</main>
+{% endblock %}

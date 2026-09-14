@@ -201,10 +201,34 @@ GOOGLE_MAPS_MAP_ID = os.getenv(
     '',
 )
 
-
 WHAT3WORDS_API_KEY = os.getenv(
     'WHAT3WORDS_API_KEY',
     '',
+)
+
+
+# ---------------------------------------------------------
+# Stripe
+# ---------------------------------------------------------
+
+STRIPE_PUBLIC_KEY = os.getenv(
+    'STRIPE_PUBLIC_KEY',
+    '',
+)
+
+STRIPE_SECRET_KEY = os.getenv(
+    'STRIPE_SECRET_KEY',
+    '',
+)
+
+STRIPE_WEBHOOK_SECRET = os.getenv(
+    'STRIPE_WEBHOOK_SECRET',
+    '',
+)
+
+STRIPE_CURRENCY = os.getenv(
+    'STRIPE_CURRENCY',
+    'gbp',
 )
 
 

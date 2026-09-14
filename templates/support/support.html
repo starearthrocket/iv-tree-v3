@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Support I-V Tree{% endblock %}
+
+{% block content %}
+<main>
+    <section class="support-section">
+        <div class="section-container">
+
+            <div class="support-heading">
+                <p class="section-eyebrow">
+                    Support I-V Tree
+                </p>
+
+                <h1>
+                    Help keep I-V Tree growing
+                </h1>
+
+                <p>
+                    I-V Tree is designed to stay free for people
+                    reporting, monitoring and protecting trees.
+                    A voluntary donation helps support the project
+                    and its future development.
+                </p>
+            </div>
+
+            <div class="support-grid">
+
+                <article class="support-card">
+                    <p class="section-eyebrow">
+                        One-off donation
+                    </p>
+
+                    <h2>
+                        Make a contribution
+                    </h2>
+
+                    <p>
+                        Choose any amount from £1. Payments are
+                        processed securely through Stripe.
+                    </p>
+
+                    <form
+                        method="post"
+                        class="support-donation-form"
+                    >
+                        {% csrf_token %}
+
+                        <div class="form-group">
+                            <label for="{{ form.amount.id_for_label }}">
+                                {{ form.amount.label }}
+                            </label>
+
+                            {{ form.amount }}
+
+                            {% if form.amount.help_text %}
+                                <p class="form-help-text">
+                                    {{ form.amount.help_text }}
+                                </p>
+                            {% endif %}
+
+                            {% if form.amount.errors %}
+                                <div class="form-error">
+                                    {{ form.amount.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="button button-primary"
+                        >
+                            Continue to secure payment
+                        </button>
+                    </form>
+                </article>
+
+                <aside class="support-card">
+                    <p class="section-eyebrow">
+                        Why support us?
+                    </p>
+
+                    <h2>
+                        Helping I-V Tree develop
+                    </h2>
+
+                    <p>
+                        Contributions can help with the ongoing
+                        costs of running and improving I-V Tree,
+                        including mapping, location services,
+                        hosting and future community features.
+                    </p>
+
+                    <p>
+                        Supporting I-V Tree is optional. The core
+                        reporting and monitoring features are
+                        intended to remain free to use.
+                    </p>
+                </aside>
+
+            </div>
+
+        </div>
+    </section>
+</main>
+{% endblock %}
