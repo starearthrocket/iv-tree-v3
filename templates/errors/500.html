@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Something Went Wrong | I-V Tree{% endblock %}
+
+{% block content %}
+<main>
+    <section class="error-page">
+        <div class="error-page__content">
+
+            <p class="section-eyebrow">
+                500 — Server Error
+            </p>
+
+            <h1>
+                Something went wrong.
+            </h1>
+
+            <p class="error-page__message">
+                I-V Tree has encountered an unexpected problem.
+                Please try again in a moment.
+            </p>
+
+            <div class="error-page__actions">
+
+                <a
+                    href="{% url 'core:home' %}"
+                    class="button button-primary"
+                >
+                    Return Home
+                </a>
+
+                <a
+                    href="{% url 'reports:report_map' %}"
+                    class="button button-outline-dark"
+                >
+                    Explore Trees
+                </a>
+
+            </div>
+
+        </div>
+    </section>
+</main>
+{% endblock %}

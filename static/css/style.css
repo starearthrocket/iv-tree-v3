@@ -2357,3 +2357,69 @@ a {
 #map-no-filter-results[hidden] {
     display: none !important;
 }
+
+/* ---------------------------------------------------------
+   Error pages
+   --------------------------------------------------------- */
+
+.error-page {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    padding: 4rem 1.5rem;
+    background: #F7F5EC;
+}
+
+.error-page__content {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.error-page__image {
+    display: block;
+    width: min(280px, 70vw);
+    height: auto;
+    margin: 0 auto 2rem;
+}
+
+.error-page .eyebrow {
+    margin-bottom: 0.75rem;
+    color: #166B3A;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.error-page h1 {
+    margin-bottom: 1rem;
+}
+
+.error-page__message {
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    line-height: 1.7;
+}
+
+.error-page__actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+    .error-page {
+        min-height: 60vh;
+        padding: 3rem 1rem;
+    }
+
+    .error-page__actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .error-page__actions .button {
+        width: 100%;
+    }
+}
