@@ -176,15 +176,33 @@ LOGOUT_REDIRECT_URL = 'core:home'
 # Email
 # ---------------------------------------------------------
 
+MAILER_BACKEND = os.getenv(
+    'MAILER_BACKEND',
+    'django.core.mail.backends.console.EmailBackend',
+)
+
 MAILERS = {
     'default': {
-        'BACKEND': (
-            'django.core.mail.backends.console.EmailBackend'
-        ),
+        'BACKEND': MAILER_BACKEND,
     },
 }
 
-DEFAULT_FROM_EMAIL = 'I-V Tree <noreply@iv-tree.co.uk>'
+if MAILER_BACKEND == 'django.core.mail.backends.smtp.EmailBackend':
+    MAILERS['default']['OPTIONS'] = {
+        'host': os.environ['EMAIL_HOST'],
+        'port': int(os.getenv('EMAIL_PORT', '587')),
+        'username': os.environ['EMAIL_HOST_USER'],
+        'password': os.environ['EMAIL_HOST_PASSWORD'],
+        'use_tls': (
+            os.getenv('EMAIL_USE_TLS', 'True').lower() == 'true'
+        ),
+        'timeout': 10,
+    }
+
+DEFAULT_FROM_EMAIL = os.getenv(
+    'DEFAULT_FROM_EMAIL',
+    'I-V Tree <noreply@iv-tree.co.uk>',
+)
 
 
 # ---------------------------------------------------------
