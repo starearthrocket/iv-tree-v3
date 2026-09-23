@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Page Not Found | I-V Tree{% endblock %}
+
+{% block content %}
+<main>
+    <section class="error-page">
+        <div class="error-page__content">
+
+            <img
+                src="{% static 'utility/error-404.png' %}"
+                alt=""
+                class="error-page__image"
+            >
+
+            <p class="section-eyebrow">
+                404 — Page Not Found
+            </p>
+
+            <h1>
+                This path has gone a little wild.
+            </h1>
+
+            <p class="error-page__message">
+                We couldn't find the page you're looking for.
+                It may have moved, been removed, or the address
+                may have been entered incorrectly.
+            </p>
+
+            <div class="error-page__actions">
+
+                <a
+                    href="{% url 'core:home' %}"
+                    class="button button-primary"
+                >
+                    Return Home
+                </a>
+
+                <a
+                    href="{% url 'reports:report_map' %}"
+                    class="button button-outline-dark"
+                >
+                    Explore Trees
+                </a>
+
+            </div>
+
+        </div>
+    </section>
+</main>
+{% endblock %}
