@@ -2766,3 +2766,34 @@ a {
         line-height: 1.6;
     }
 }
+
+/* ----------------------------------------
+   Support page mobile polish
+---------------------------------------- */
+
+@media (max-width: 600px) {
+    .support-donation-form .form-group {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+
+    .support-donation-form .form-group label {
+        display: block;
+        width: 100%;
+    }
+
+    .support-donation-form .form-group input {
+        width: 100%;
+        min-height: 44px;
+        padding: 0.7rem 0.8rem;
+        font: inherit;
+    }
+
+    .support-donation-form .button {
+        width: 100%;
+        min-height: 44px;
+        margin-top: 0.5rem;
+    }
+}
