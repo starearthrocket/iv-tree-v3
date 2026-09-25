@@ -21,7 +21,7 @@
 
     <link
         rel="stylesheet"
-        href="{% static 'css/style.css' %}?v=2"
+        href="{% static 'css/style.css' %}?v=3"
     >
 </head>
 
@@ -40,7 +40,23 @@
                 >
             </a>
 
-            <nav class="main-nav" aria-label="Main navigation">
+            <button
+                type="button"
+                class="nav-toggle"
+                aria-expanded="false"
+                aria-controls="main-navigation"
+                aria-label="Open navigation menu"
+            >
+                <span class="nav-toggle-line"></span>
+                <span class="nav-toggle-line"></span>
+                <span class="nav-toggle-line"></span>
+            </button>
+
+            <nav
+                id="main-navigation"
+                class="main-nav"
+                aria-label="Main navigation"
+            >
                 <a href="{% url 'core:home' %}">
                     Home
                 </a>
@@ -57,7 +73,7 @@
                     Community
                 </a>
 
-                <a href="#">
+                <a href="{% url 'support:support_page' %}">
                     Support
                 </a>
 
@@ -145,7 +161,7 @@
                         Community
                     </a>
 
-                    <a href="#">
+                    <a href="{% url 'support:support_page' %}">
                         Support
                     </a>
 
@@ -185,5 +201,28 @@
             </p>
         </div>
     </footer>
+
+    <script>
+        const navToggle = document.querySelector('.nav-toggle');
+        const mainNav = document.querySelector('.main-nav');
+
+        if (navToggle && mainNav) {
+            navToggle.addEventListener('click', () => {
+                const isOpen = mainNav.classList.toggle('is-open');
+
+                navToggle.setAttribute(
+                    'aria-expanded',
+                    isOpen.toString()
+                );
+
+                navToggle.setAttribute(
+                    'aria-label',
+                    isOpen
+                        ? 'Close navigation menu'
+                        : 'Open navigation menu'
+                );
+            });
+        }
+    </script>
 </body>
 </html>

@@ -2423,3 +2423,137 @@ a {
         width: 100%;
     }
 }
+
+/* ----------------------------------------
+   Final mobile navigation and footer polish
+---------------------------------------- */
+
+.nav-toggle {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .header-inner {
+        position: relative;
+        min-height: 72px;
+        padding: 0;
+        flex-direction: row;
+        gap: 1rem;
+    }
+
+    .site-logo {
+        width: 112px;
+    }
+
+    .nav-toggle {
+        width: 44px;
+        height: 44px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        background: transparent;
+        border: 1px solid rgba(15, 61, 46, 0.2);
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    .nav-toggle-line {
+        width: 21px;
+        height: 2px;
+        display: block;
+        background-color: var(--forest-deep);
+        border-radius: 999px;
+    }
+
+    .main-nav {
+        position: absolute;
+        z-index: 1000;
+        top: calc(100% - 1px);
+        left: 0;
+        width: 100%;
+        padding: 0.75rem;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        background-color: var(--cream);
+        border: 1px solid rgba(15, 61, 46, 0.12);
+        border-radius: 0 0 14px 14px;
+        box-shadow: 0 14px 28px rgba(15, 61, 46, 0.12);
+    }
+
+    .main-nav.is-open {
+        display: flex;
+    }
+
+    .main-nav a,
+    .nav-logout-button {
+        width: 100%;
+        padding: 0.8rem 0.75rem;
+        display: block;
+        color: var(--forest-deep);
+        font-size: 0.95rem;
+        text-align: left;
+        border-radius: 8px;
+    }
+
+    .main-nav a:hover,
+    .main-nav a:focus-visible,
+    .nav-logout-button:hover,
+    .nav-logout-button:focus-visible {
+        background-color: rgba(143, 190, 143, 0.18);
+        color: var(--forest-deep);
+    }
+
+    .nav-logout-form {
+        width: 100%;
+    }
+
+    .footer-inner {
+        padding: 2rem 0 1.5rem;
+        gap: 1.75rem;
+    }
+
+    .footer-brand {
+        align-items: center;
+    }
+
+    .footer-logo {
+        width: 54px;
+        height: 54px;
+    }
+
+    .footer-brand h2 {
+        font-size: 1.4rem;
+    }
+
+    .footer-brand p {
+        font-size: 0.85rem;
+    }
+
+    .footer-links {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+
+    .footer-links h3 {
+        margin-bottom: 0.65rem;
+        font-size: 0.78rem;
+    }
+
+    .footer-links a {
+        margin-bottom: 0.45rem;
+        font-size: 0.78rem;
+    }
+
+    .footer-bottom {
+        padding: 0.9rem 0;
+    }
+
+    .footer-bottom p {
+        font-size: 0.72rem;
+    }
+}
