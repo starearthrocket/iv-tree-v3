@@ -2726,3 +2726,43 @@ a {
         gap: 0.5rem 0.9rem;
     }
 }
+
+/* ----------------------------------------
+   Community mobile card polish
+---------------------------------------- */
+
+@media (max-width: 600px) {
+    .community-post-list {
+        gap: 1rem;
+    }
+
+    .community-post-image {
+        min-height: 0;
+        height: 180px;
+        max-height: 180px;
+    }
+
+    .community-post-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .community-post-content {
+        padding: 1.35rem;
+    }
+
+    .community-post-label {
+        margin-bottom: 0.5rem;
+    }
+
+    .community-post-content h2 {
+        margin-bottom: 0.7rem;
+        font-size: 1.5rem;
+    }
+
+    .community-post-preview {
+        margin-bottom: 0.9rem;
+        line-height: 1.6;
+    }
+}
