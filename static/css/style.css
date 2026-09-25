@@ -1238,6 +1238,18 @@ a {
     margin: -1rem 0 2rem;
 }
 
+.report-form .form-actions {
+    margin: 2rem 0 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(15, 61, 46, 0.12);
+}
+
+.report-form .form-actions .button {
+    min-width: 220px;
+    min-height: 48px;
+    padding: 0.8rem 1.5rem;
+}
+
 .button-outline-dark {
     border-color: var(--forest-deep);
     color: var(--forest-deep);
