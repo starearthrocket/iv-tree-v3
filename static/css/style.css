@@ -2623,3 +2623,106 @@ a {
         display: inline-block;
     }
 }
+
+/* ----------------------------------------
+   Explore Map mobile report list polish
+---------------------------------------- */
+
+@media (max-width: 900px) {
+    .map-report-panel {
+        max-height: 560px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .map-report-heading {
+        flex-shrink: 0;
+    }
+
+    .map-report-list {
+        min-height: 0;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #8FBE8F #F7F5EC;
+    }
+
+    .map-report-list::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .map-report-list::-webkit-scrollbar-track {
+        background: #F7F5EC;
+        border-radius: 999px;
+    }
+
+    .map-report-list::-webkit-scrollbar-thumb {
+        background: #8FBE8F;
+        border-radius: 999px;
+    }
+}
+
+@media (max-width: 700px) {
+    .map-report-panel {
+        padding: 1.25rem;
+    }
+
+    .map-report-heading {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .map-report-heading-row {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .map-report-heading h2 {
+        font-size: 1.6rem;
+    }
+
+    .map-filter-controls {
+        width: 100%;
+        display: grid;
+        gap: 0.65rem;
+    }
+
+    .map-search-field,
+    .map-status-field {
+        width: 100%;
+    }
+
+    .map-search-field input,
+    .map-status-field select {
+        width: 100%;
+        min-height: 44px;
+        padding: 0.65rem 0.75rem;
+        border: 1px solid rgba(15, 61, 46, 0.2);
+        border-radius: 10px;
+        background-color: var(--white);
+        font: inherit;
+        font-size: 0.85rem;
+    }
+
+    .map-filter-summary {
+        font-size: 0.8rem;
+    }
+
+    .map-report-card {
+        grid-template-columns: 42px minmax(0, 1fr);
+        gap: 0.9rem;
+    }
+
+    .map-report-marker img {
+        width: 36px;
+        height: 36px;
+    }
+
+    .map-report-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 0.9rem;
+    }
+}
