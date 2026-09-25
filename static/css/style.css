@@ -2797,3 +2797,136 @@ a {
         margin-top: 0.5rem;
     }
 }
+
+/* ----------------------------------------
+   Report form polish
+---------------------------------------- */
+
+.report-form {
+    max-width: 900px;
+}
+
+.report-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.report-form .form-group > label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #0F3D2E;
+}
+
+.report-form input[type="text"],
+.report-form input[type="search"],
+.report-form textarea,
+.report-form select {
+    width: 100%;
+    min-height: 44px;
+    padding: 0.75rem 0.85rem;
+    border: 1px solid rgba(15, 61, 46, 0.25);
+    border-radius: 10px;
+    background-color: #fff;
+    color: #1F1F1F;
+    font: inherit;
+}
+
+.report-form textarea {
+    min-height: 130px;
+    resize: vertical;
+}
+
+.report-form input[type="text"]:focus,
+.report-form input[type="search"]:focus,
+.report-form textarea:focus,
+.report-form select:focus {
+    outline: 3px solid rgba(76, 175, 80, 0.2);
+    border-color: #166B3A;
+}
+
+.report-form input[type="file"] {
+    display: block;
+    width: 100%;
+    padding: 0.65rem;
+    border: 1px solid rgba(15, 61, 46, 0.18);
+    border-radius: 10px;
+    background-color: #fff;
+    font: inherit;
+}
+
+.form-help-text,
+.report-form small {
+    display: block;
+    margin-top: 0.55rem;
+    color: #5f665f;
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+.field-error {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.location-picker-actions {
+    margin: 1rem 0;
+}
+
+.what3words-entry {
+    display: flex;
+    align-items: stretch;
+    gap: 0.75rem;
+}
+
+.what3words-entry input {
+    flex: 1;
+    min-width: 0;
+}
+
+.location-details {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    border: 1px solid rgba(15, 61, 46, 0.16);
+    border-radius: 12px;
+    background-color: #F7F5EC;
+}
+
+.location-details summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: #0F3D2E;
+}
+
+.report-visibility-field {
+    padding: 1rem;
+    border: 1px solid rgba(15, 61, 46, 0.16);
+    border-radius: 12px;
+    background-color: #F7F5EC;
+}
+
+.report-visibility-field select {
+    width: 100%;
+}
+
+@media (max-width: 600px) {
+    .report-form .form-group {
+        margin-bottom: 1.25rem;
+    }
+
+    .what3words-entry {
+        flex-direction: column;
+    }
+
+    .what3words-entry .button,
+    .location-picker-actions .button,
+    .report-form .form-actions .button {
+        width: 100%;
+        min-height: 44px;
+    }
+
+    .location-details,
+    .report-visibility-field {
+        padding: 0.9rem;
+    }
+}
