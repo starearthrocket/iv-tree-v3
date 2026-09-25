@@ -2557,3 +2557,69 @@ a {
         font-size: 0.72rem;
     }
 }
+
+/* ----------------------------------------
+   Dashboard visual polish
+---------------------------------------- */
+
+.dashboard-badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.dashboard-visibility {
+    display: inline-block;
+    padding: 0.3rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.dashboard-visibility-public {
+    background-color: #edf5ec;
+    color: var(--forest-green);
+}
+
+.dashboard-visibility-private {
+    background-color: #f1eee5;
+    color: #665f50;
+}
+
+@media (max-width: 700px) {
+    .dashboard-section {
+        padding: 3.5rem 0 4rem;
+    }
+
+    .dashboard-stats {
+        gap: 0.65rem;
+    }
+
+    .dashboard-stat {
+        padding: 0.9rem 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .dashboard-stat strong {
+        margin-bottom: 0;
+        font-size: 1.9rem;
+    }
+
+    .dashboard-panel {
+        padding: 1.5rem;
+    }
+
+    .dashboard-panel-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .dashboard-report-link {
+        display: inline-block;
+    }
+}

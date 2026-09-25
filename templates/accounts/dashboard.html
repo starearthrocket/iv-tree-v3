@@ -56,7 +56,7 @@
 
                         <a
                             href="{% url 'reports:report_create' %}"
-                            class="text-link"
+                            class="text-link dashboard-report-link"
                         >
                             + Report a Tree
                         </a>
@@ -65,9 +65,21 @@
                     {% for report in my_reports %}
                         <article class="dashboard-item">
                             <div>
-                                <span class="dashboard-status">
-                                    {{ report.get_status_display }}
-                                </span>
+                                <div class="dashboard-badges">
+                                    <span class="dashboard-status">
+                                        {{ report.get_status_display }}
+                                    </span>
+
+                                    <span
+                                        class="dashboard-visibility dashboard-visibility-{{ report.visibility }}"
+                                    >
+                                        {% if report.visibility == 'PRIVATE' %}
+                                            🔒 Private
+                                        {% else %}
+                                            🌐 Public
+                                        {% endif %}
+                                    </span>
+                                </div>
 
                                 <h3>{{ report.title }}</h3>
 
