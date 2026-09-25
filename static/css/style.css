@@ -994,8 +994,8 @@ a {
 
 .report-detail-photo {
     width: 100%;
-    max-height: 520px;
-    object-fit: cover;
+    height: auto;
+    object-fit: contain;
 }
 
 .report-photo-placeholder {
