@@ -1198,6 +1198,31 @@ a {
     }
 }
 
+@media (max-width: 650px) {
+    .location-card {
+        gap: 1rem;
+        padding: 1.35rem;
+    }
+
+    .location-card h2 {
+        margin-bottom: 0.5rem;
+        font-size: 1.7rem;
+    }
+
+    .detail-marker {
+        margin-bottom: -0.5rem;
+    }
+
+    .owner-actions {
+        gap: 0.65rem;
+    }
+
+    .owner-actions .button {
+        min-height: 44px;
+        padding: 0.65rem 1rem;
+    }
+}
+
 /* ----------------------------------------
    Report ownership actions
 ---------------------------------------- */
