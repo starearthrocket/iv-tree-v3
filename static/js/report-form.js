@@ -1,4 +1,5 @@
-"use strict";
+/* jshint esversion: 8, esnext: false */
+/* global google */
 
 document.addEventListener("DOMContentLoaded", () => {
     const countrySearch = document.getElementById("country-search");
@@ -242,7 +243,6 @@ async function initLocationPickerMap() {
         }
 
         const csrfToken = csrfTokenElement.value;
-
         const mapId = mapElement.dataset.mapId;
 
         const what3wordsUrl =
@@ -260,15 +260,17 @@ async function initLocationPickerMap() {
             !Number.isNaN(existingLatitude) &&
             !Number.isNaN(existingLongitude);
 
-        const initialPosition = hasExistingLocation
-            ? {
+        let initialPosition = {
+            lat: 54.5,
+            lng: -3.0
+        };
+
+        if (hasExistingLocation) {
+            initialPosition = {
                 lat: existingLatitude,
                 lng: existingLongitude
-            }
-            : {
-                lat: 54.5,
-                lng: -3.0
             };
+        }
 
         const map = new Map(
             mapElement,
@@ -284,16 +286,16 @@ async function initLocationPickerMap() {
 
         let locationMarker = null;
 
-        function getAddressComponent(result, type) {
+        const getAddressComponent = (result, type) => {
             const component =
                 result.address_components.find(
                     (item) => item.types.includes(type)
                 );
 
             return component || null;
-        }
+        };
 
-        function getLocationSummaryText() {
+        const getLocationSummaryText = () => {
             const parts = [];
 
             if (
@@ -320,9 +322,9 @@ async function initLocationPickerMap() {
             }
 
             return parts.join(", ");
-        }
+        };
 
-        function refreshLocationSummary() {
+        const refreshLocationSummary = () => {
             const summary = getLocationSummaryText();
 
             if (summary) {
@@ -331,13 +333,13 @@ async function initLocationPickerMap() {
             } else {
                 locationSummary.textContent = "";
             }
-        }
+        };
 
-        function setTreeLocation(
+        const setTreeLocation = (
             position,
             statusMessage,
             zoomLevel = null
-        ) {
+        ) => {
             latitudeInput.value =
                 Number(position.lat).toFixed(6);
 
@@ -362,9 +364,9 @@ async function initLocationPickerMap() {
             }
 
             statusElement.textContent = statusMessage;
-        }
+        };
 
-        async function reverseGeocodeLocation(position) {
+        const reverseGeocodeLocation = async (position) => {
             try {
                 const response = await geocoder.geocode({
                     location: position
@@ -466,13 +468,13 @@ async function initLocationPickerMap() {
 
                 return false;
             }
-        }
+        };
 
-        async function selectLocation(
+        const selectLocation = async (
             position,
             statusMessage,
             zoomLevel
-        ) {
+        ) => {
             setTreeLocation(
                 position,
                 statusMessage,
@@ -480,7 +482,7 @@ async function initLocationPickerMap() {
             );
 
             await reverseGeocodeLocation(position);
-        }
+        };
 
         if (hasExistingLocation) {
             setTreeLocation(

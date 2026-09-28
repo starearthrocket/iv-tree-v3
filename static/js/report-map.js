@@ -1,4 +1,5 @@
-"use strict";
+/* jshint esversion: 8, esnext: false */
+/* global google */
 
 async function initReportMap() {
     try {
@@ -67,7 +68,7 @@ async function initReportMap() {
         let openInfoWindow = null;
         let selectedCard = null;
 
-        function getReportLocation(card) {
+        const getReportLocation = (card) => {
             const locationParts = [
                 card.dataset.townCity,
                 card.dataset.region,
@@ -88,9 +89,9 @@ async function initReportMap() {
             }
 
             return "Location not specified";
-        }
+        };
 
-        function createMarkerContent(card) {
+        const createMarkerContent = (card) => {
             const markerImage =
                 document.createElement("img");
 
@@ -109,9 +110,9 @@ async function initReportMap() {
                 "bottom center";
 
             return markerImage;
-        }
+        };
 
-        function createInfoWindowContent(card) {
+        const createInfoWindowContent = (card) => {
             const container =
                 document.createElement("div");
 
@@ -139,9 +140,9 @@ async function initReportMap() {
             container.appendChild(link);
 
             return container;
-        }
+        };
 
-        function clearSelectedCard() {
+        const clearSelectedCard = () => {
             if (!selectedCard) {
                 return;
             }
@@ -151,9 +152,9 @@ async function initReportMap() {
             );
 
             selectedCard = null;
-        }
+        };
 
-        function selectCard(card) {
+        const selectCard = (card) => {
             clearSelectedCard();
 
             card.classList.add(
@@ -161,19 +162,19 @@ async function initReportMap() {
             );
 
             selectedCard = card;
-        }
+        };
 
-        function enlargeMarker(markerContent) {
+        const enlargeMarker = (markerContent) => {
             markerContent.style.transform =
                 "scale(1.3)";
-        }
+        };
 
-        function resetMarker(markerContent) {
+        const resetMarker = (markerContent) => {
             markerContent.style.transform =
                 "scale(1)";
-        }
+        };
 
-        function resetOtherMarkers(reportId) {
+        const resetOtherMarkers = (reportId) => {
             reportMapItems.forEach(
                 (item, itemId) => {
                     if (itemId !== reportId) {
@@ -183,9 +184,9 @@ async function initReportMap() {
                     }
                 }
             );
-        }
+        };
 
-        function scrollReportToTop(card) {
+        const scrollReportToTop = (card) => {
             if (!reportList) {
                 return;
             }
@@ -213,11 +214,11 @@ async function initReportMap() {
                 top: targetPosition,
                 behavior: "smooth"
             });
-        }
+        };
 
-        function closePreviousInfoWindow(
+        const closePreviousInfoWindow = (
             nextInfoWindow
-        ) {
+        ) => {
             if (
                 openInfoWindow &&
                 openInfoWindow !== nextInfoWindow
@@ -226,12 +227,12 @@ async function initReportMap() {
             }
 
             openInfoWindow = nextInfoWindow;
-        }
+        };
 
-        function showReportOnMap(
+        const showReportOnMap = (
             reportId,
             options = {}
-        ) {
+        ) => {
             const item =
                 reportMapItems.get(reportId);
 
@@ -270,9 +271,9 @@ async function initReportMap() {
             if (options.scrollReport) {
                 scrollReportToTop(item.card);
             }
-        }
+        };
 
-        function moveToMapOnSmallScreen() {
+        const moveToMapOnSmallScreen = () => {
             if (
                 window.matchMedia(
                     "(max-width: 900px)"
@@ -283,9 +284,9 @@ async function initReportMap() {
                     block: "start"
                 });
             }
-        }
+        };
 
-        function getCardSearchText(card) {
+        const getCardSearchText = (card) => {
             return [
                 card.dataset.title,
                 card.dataset.treeSpecies,
@@ -298,20 +299,22 @@ async function initReportMap() {
                 .filter(Boolean)
                 .join(" ")
                 .toLowerCase();
-        }
+        };
 
-        function cardMatchesFilters(card) {
-            const searchTerm =
-                searchInput
-                    ? searchInput.value
-                        .trim()
-                        .toLowerCase()
-                    : "";
+        const cardMatchesFilters = (card) => {
+            let searchTerm = "";
 
-            const selectedStatus =
-                statusFilter
-                    ? statusFilter.value
-                    : "";
+            if (searchInput) {
+                searchTerm = searchInput.value
+                    .trim()
+                    .toLowerCase();
+            }
+
+            let selectedStatus = "";
+
+            if (statusFilter) {
+                selectedStatus = statusFilter.value;
+            }
 
             const searchMatches =
                 !searchTerm ||
@@ -328,11 +331,11 @@ async function initReportMap() {
                 searchMatches &&
                 statusMatches
             );
-        }
+        };
 
-        function fitVisibleMarkers(
+        const fitVisibleMarkers = (
             visibleItems
-        ) {
+        ) => {
             if (!visibleItems.length) {
                 map.setCenter({
                     lat: 54.5,
@@ -340,7 +343,6 @@ async function initReportMap() {
                 });
 
                 map.setZoom(5);
-
                 return;
             }
 
@@ -359,33 +361,32 @@ async function initReportMap() {
                 );
 
                 map.setZoom(13);
-
                 return;
             }
 
             map.fitBounds(visibleBounds);
-        }
+        };
 
-        function updateFilterCount(
+        const updateFilterCount = (
             visibleCount
-        ) {
+        ) => {
             if (!filterCount) {
                 return;
             }
 
             const totalCount = cards.length;
+            let treeWord = "trees";
 
-            const treeWord =
-                totalCount === 1
-                    ? "tree"
-                    : "trees";
+            if (totalCount === 1) {
+                treeWord = "tree";
+            }
 
             filterCount.textContent =
                 `Showing ${visibleCount} of ` +
                 `${totalCount} ${treeWord}`;
-        }
+        };
 
-        function updateFilters() {
+        const updateFilters = () => {
             const visibleItems = [];
 
             if (openInfoWindow) {
@@ -438,12 +439,15 @@ async function initReportMap() {
             } else {
                 reportMapItems.forEach(
                     (item) => {
-                        item.marker.map =
+                        if (
                             visibleMarkers.includes(
                                 item.marker
                             )
-                                ? map
-                                : null;
+                        ) {
+                            item.marker.map = map;
+                        } else {
+                            item.marker.map = null;
+                        }
                     }
                 );
             }
@@ -482,7 +486,7 @@ async function initReportMap() {
             fitVisibleMarkers(
                 visibleItems
             );
-        }
+        };
 
         cards.forEach((card) => {
             const latitude =

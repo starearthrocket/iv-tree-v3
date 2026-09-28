@@ -1,5 +1,8 @@
+/* jshint esversion: 8, esnext: false */
+/* global google */
+
 async function initDetailReportMap() {
-    const mapElement = document.getElementById('detail-report-map');
+    const mapElement = document.getElementById("detail-report-map");
 
     if (!mapElement) {
         return;
@@ -11,12 +14,14 @@ async function initDetailReportMap() {
         const mapId = mapElement.dataset.mapId;
 
         if (Number.isNaN(latitude) || Number.isNaN(longitude)) {
-            throw new Error('Report coordinates are unavailable.');
+            throw new Error("Report coordinates are unavailable.");
         }
 
-        const { Map: GoogleMap } = await google.maps.importLibrary('maps');
+        const { Map: GoogleMap } =
+            await google.maps.importLibrary("maps");
+
         const { AdvancedMarkerElement } =
-            await google.maps.importLibrary('marker');
+            await google.maps.importLibrary("marker");
 
         const position = {
             lat: latitude,
@@ -33,49 +38,56 @@ async function initDetailReportMap() {
         });
 
         const markerUrlElement =
-            document.getElementById('detail-marker-url');
+            document.getElementById("detail-marker-url");
 
-        const markerImage = document.createElement('img');
+        const markerImage = document.createElement("img");
+        let markerUrl = "";
 
-        markerImage.src = markerUrlElement
-            ? markerUrlElement.dataset.markerUrl
-            : '';
+        if (markerUrlElement) {
+            markerUrl = markerUrlElement.dataset.markerUrl;
+        }
 
-        markerImage.alt = '';
-        markerImage.style.width = '42px';
-        markerImage.style.height = '52px';
-        markerImage.style.objectFit = 'contain';
-        markerImage.style.display = 'block';
+        markerImage.src = markerUrl;
+        markerImage.alt = "";
+        markerImage.style.width = "42px";
+        markerImage.style.height = "52px";
+        markerImage.style.objectFit = "contain";
+        markerImage.style.display = "block";
 
-        new AdvancedMarkerElement({
+        const reportMarker = new AdvancedMarkerElement({
             map: map,
             position: position,
             title: mapElement.dataset.title,
             content: markerImage
         });
+
+        return reportMarker;
     } catch (error) {
         console.error(
-            'I-V Tree detail map failed to load:',
+            "I-V Tree detail map failed to load:",
             error
         );
 
-        mapElement.innerHTML = '';
+        mapElement.innerHTML = "";
 
-        const message = document.createElement('div');
-        message.className = 'map-placeholder-content';
+        const message = document.createElement("div");
+        message.className = "map-placeholder-content";
 
-        const heading = document.createElement('p');
-        heading.className = 'section-eyebrow';
-        heading.textContent = 'Map unavailable';
+        const heading = document.createElement("p");
+        heading.className = "section-eyebrow";
+        heading.textContent = "Map unavailable";
 
-        const description = document.createElement('p');
+        const description = document.createElement("p");
         description.textContent =
-            'The report is still available, but its map could not be loaded.';
+            "The report is still available, " +
+            "but its map could not be loaded.";
 
         message.appendChild(heading);
         message.appendChild(description);
         mapElement.appendChild(message);
     }
+
+    return null;
 }
 
 window.initDetailReportMap = initDetailReportMap;
