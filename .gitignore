@@ -24,4 +24,4 @@ staticfiles/
 .idea/
 
 # Logs
-*.logpython -m pip install --upgrade pip
+*.log
