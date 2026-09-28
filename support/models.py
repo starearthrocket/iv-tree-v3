@@ -24,7 +24,7 @@ class Donation(models.Model):
     amount = models.DecimalField(
         max_digits=10,
         decimal_places=2,
-        validators=[MinValueValidator(0.01)],
+        validators=[MinValueValidator(Decimal('1.00'))],
     )
     stripe_session_id = models.CharField(
         max_length=255,

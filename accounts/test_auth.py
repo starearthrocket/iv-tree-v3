@@ -51,3 +51,39 @@ class RegistrationViewTest(TestCase):
             ).count(),
             1
         )
+
+    def test_authenticated_user_cannot_open_register_page(self):
+        user = User.objects.create_user(
+            username='member',
+            email='member@example.com',
+            password='StrongTestPassword123!'
+        )
+
+        self.client.force_login(user)
+
+        response = self.client.get(
+            reverse('accounts:register')
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            response.url,
+            reverse('core:home')
+        )
+
+
+class LoginViewTest(TestCase):
+    def test_authenticated_user_cannot_open_login_page(self):
+        user = User.objects.create_user(
+            username='member',
+            email='member@example.com',
+            password='StrongTestPassword123!'
+        )
+
+        self.client.force_login(user)
+
+        response = self.client.get(
+            reverse('accounts:login')
+        )
+
+        self.assertEqual(response.status_code, 302)

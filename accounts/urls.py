@@ -3,13 +3,16 @@ from django.urls import path, reverse_lazy
 
 from . import views
 
+
 app_name = 'accounts'
+
 
 urlpatterns = [
     path(
         'login/',
         auth_views.LoginView.as_view(
-            template_name='accounts/login.html'
+            template_name='accounts/login.html',
+            redirect_authenticated_user=True,
         ),
         name='login',
     ),

@@ -322,15 +322,14 @@
 
                         {% if google_maps_api_key and google_maps_map_id %}
 
-                            <div
+                           <div
                                 id="detail-report-map"
                                 class="detail-report-map"
                                 data-latitude="{{ report.latitude|unlocalize }}"
                                 data-longitude="{{ report.longitude|unlocalize }}"
-				data-map-id="{{ google_maps_map_id }}"
-                                data-title="{{ report.title }}"
+                                data-map-id="{{ google_maps_map_id }}"
+                                 data-title="{{ report.title }}"
                                 aria-label="Map showing the location of {{ report.title }}"
-                                style="min-height: 320px; width: 100%; border-radius: 12px; overflow: hidden;"
                             ></div>
 
                             {% if report.status == 'IN_PROGRESS' %}
