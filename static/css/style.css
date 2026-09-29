@@ -2974,3 +2974,134 @@ a {
     border-radius: 12px;
     overflow: hidden;
 }
+
+/* ----------------------------------------
+   Homepage live report map
+----------------------------------------- */
+
+.home-report-map {
+    width: 100%;
+    min-height: 420px;
+    background-color: #e7ebe5;
+}
+
+.home-map-marker-content {
+    width: 38px;
+    height: 48px;
+    display: block;
+    object-fit: contain;
+    transform-origin: bottom center;
+    transition: transform 0.2s ease;
+}
+
+.home-map-marker-active {
+    transform: scale(1.25);
+}
+
+.map-preview-footer {
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    background-color: var(--white);
+    border-top: 1px solid rgba(15, 61, 46, 0.1);
+}
+
+.map-preview-footer strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: var(--forest-deep);
+}
+
+.map-preview-footer p {
+    margin: 0;
+    color: #5a605a;
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+.map-preview-footer .button {
+    flex-shrink: 0;
+}
+
+.home-reports-empty {
+    padding: 1rem 0 0;
+}
+
+.home-reports-empty h4 {
+    margin: 0 0 0.75rem;
+    color: var(--forest-deep);
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+    font-size: 1.4rem;
+}
+
+.home-reports-empty > p:not(.section-eyebrow) {
+    margin: 0 0 1rem;
+    color: #5a605a;
+    line-height: 1.7;
+}
+
+.home-map-unavailable,
+.home-map-error {
+    min-height: 420px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #eef2e8;
+    text-align: center;
+}
+
+.home-map-unavailable h3,
+.home-map-error h3 {
+    margin: 0 0 0.75rem;
+    color: var(--forest-deep);
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+    font-size: 2rem;
+}
+
+.home-map-unavailable > p:not(.section-eyebrow),
+.home-map-error > p:not(.section-eyebrow) {
+    max-width: 440px;
+    margin: 0 0 1.25rem;
+    color: #555b55;
+    line-height: 1.7;
+}
+
+.report-preview h4 a {
+    color: inherit;
+}
+
+.report-preview h4 a:hover,
+.report-preview h4 a:focus-visible {
+    color: var(--leaf-green);
+}
+
+@media (max-width: 850px) {
+    .home-report-map,
+    .home-map-unavailable,
+    .home-map-error {
+        min-height: 380px;
+    }
+}
+
+@media (max-width: 520px) {
+    .home-report-map,
+    .home-map-unavailable,
+    .home-map-error {
+        min-height: 340px;
+    }
+
+    .map-preview-footer {
+        padding: 1.25rem;
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .map-preview-footer .button {
+        width: 100%;
+        text-align: center;
+    }
+}
