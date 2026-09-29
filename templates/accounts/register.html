@@ -24,9 +24,11 @@
                         {{ field.label_tag }}
                         {{ field }}
 
-                        {% if field.help_text %}
-                            <small>{{ field.help_text }}</small>
-                        {% endif %}
+                {% if field.help_text %}
+                    <div class="form-help-text">
+                        {{ field.help_text }}
+                    </div>
+                {% endif %}
 
                         {% for error in field.errors %}
                             <p class="field-error">
