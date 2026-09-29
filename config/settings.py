@@ -250,7 +250,7 @@ if MAILER_BACKEND == 'django.core.mail.backends.smtp.EmailBackend':
 
 DEFAULT_FROM_EMAIL = os.getenv(
     'DEFAULT_FROM_EMAIL',
-    'I-V Tree <noreply@iv-tree.co.uk>',
+    'I-V Tree <noreply@ivtree.co.uk>',
 )
 
 
