@@ -2855,6 +2855,8 @@ a {
 }
 
 .report-form input[type="text"],
+.report-form input[type="email"],
+.report-form input[type="password"],
 .report-form input[type="search"],
 .report-form textarea,
 .report-form select {
@@ -2874,6 +2876,8 @@ a {
 }
 
 .report-form input[type="text"]:focus,
+.report-form input[type="email"]:focus,
+.report-form input[type="password"]:focus,
 .report-form input[type="search"]:focus,
 .report-form textarea:focus,
 .report-form select:focus {
@@ -3102,6 +3106,14 @@ a {
 
     .map-preview-footer .button {
         width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 520px) {
+    .report-form .button {
+        width: 100%;
+        min-height: 44px;
         text-align: center;
     }
 }
